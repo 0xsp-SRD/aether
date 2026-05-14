@@ -1,0 +1,194 @@
+[
+  {
+    "pattern": "mimikatz",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Mimikatz tool name string"
+  },
+  {
+    "pattern": "mimilib",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "Mimikatz library component"
+  },
+  {
+    "pattern": "mimidrv",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "Mimikatz kernel driver component"
+  },
+  {
+    "pattern": "gentilkiwi",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Mimikatz author handle (Benjamin Delpy)"
+  },
+  {
+    "pattern": "sekurlsa::",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Mimikatz sekurlsa module prefix"
+  },
+  {
+    "pattern": "sekurlsa::logonpasswords",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Mimikatz credential dumping command"
+  },
+  {
+    "pattern": "sekurlsa::wdigest",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Mimikatz WDigest credential extraction"
+  },
+  {
+    "pattern": "sekurlsa::kerberos",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Mimikatz Kerberos ticket extraction"
+  },
+  {
+    "pattern": "sekurlsa::msv",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Mimikatz MSV credential extraction"
+  },
+  {
+    "pattern": "sekurlsa::tspkg",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Mimikatz TSPKG credential extraction"
+  },
+  {
+    "pattern": "sekurlsa::dpapi",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Mimikatz DPAPI key extraction"
+  },
+  {
+    "pattern": "sekurlsa::minidump",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Mimikatz minidump parsing command"
+  },
+  {
+    "pattern": "lsadump::",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Mimikatz LSA dump module prefix"
+  },
+  {
+    "pattern": "lsadump::sam",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Mimikatz SAM database dump"
+  },
+  {
+    "pattern": "lsadump::lsa",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Mimikatz LSA secrets dump"
+  },
+  {
+    "pattern": "lsadump::dcsync",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Mimikatz DCSync replication attack"
+  },
+  {
+    "pattern": "lsadump::trust",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Mimikatz domain trust key extraction"
+  },
+  {
+    "pattern": "kerberos::golden",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Mimikatz Golden Ticket creation"
+  },
+  {
+    "pattern": "kerberos::silver",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Mimikatz Silver Ticket creation"
+  },
+  {
+    "pattern": "kerberos::ptt",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Mimikatz pass-the-ticket"
+  },
+  {
+    "pattern": "kerberos::list",
+    "weight": 6,
+    "category": "engine_managed",
+    "description": "Mimikatz Kerberos ticket listing"
+  },
+  {
+    "pattern": "privilege::debug",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Mimikatz debug privilege enable"
+  },
+  {
+    "pattern": "token::elevate",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Mimikatz token elevation command"
+  },
+  {
+    "pattern": "vault::cred",
+    "weight": 7,
+    "category": "engine_managed",
+    "description": "Mimikatz Windows Vault credential dump"
+  },
+  {
+    "pattern": "crypto::capi",
+    "weight": 6,
+    "category": "engine_managed",
+    "description": "Mimikatz CryptoAPI key extraction"
+  },
+  {
+    "pattern": "dpapi::masterkey",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Mimikatz DPAPI master key decryption"
+  },
+  {
+    "pattern": "dpapi::chrome",
+    "weight": 7,
+    "category": "engine_managed",
+    "description": "Mimikatz Chrome credential decryption"
+  },
+  {
+    "pattern": "misc::skeleton",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Mimikatz Skeleton Key backdoor"
+  },
+  {
+    "pattern": "misc::memssp",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Mimikatz in-memory SSP injection"
+  },
+  {
+    "pattern": "sid::patch",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Mimikatz SID history patching"
+  },
+  {
+    "pattern": "Benjamin Delpy",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Mimikatz author attribution string"
+  },
+  {
+    "pattern": "A La Vie, A L'Amour",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Mimikatz signature motto string"
+  }
+]

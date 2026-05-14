@@ -1,0 +1,200 @@
+[
+  {
+    "pattern": "Assembly.Load(raw)",
+    "weight": 8,
+    "category": "reflective_load",
+    "description": "Reflective .NET assembly load from byte array"
+  },
+  {
+    "pattern": "Assembly.Load(bytes)",
+    "weight": 8,
+    "category": "reflective_load",
+    "description": "Reflective .NET assembly load variant"
+  },
+  {
+    "pattern": "Assembly.Load(payload)",
+    "weight": 8,
+    "category": "reflective_load",
+    "description": "Reflective .NET assembly load (payload var)"
+  },
+  {
+    "pattern": "Assembly.LoadFrom(",
+    "weight": 5,
+    "category": "reflective_load",
+    "description": ".NET assembly load from path/URL"
+  },
+  {
+    "pattern": "AppDomain.CurrentDomain.Load(",
+    "weight": 7,
+    "category": "reflective_load",
+    "description": "AppDomain-level assembly load"
+  },
+  {
+    "pattern": "MethodInfo.Invoke(",
+    "weight": 5,
+    "category": "reflective_load",
+    "description": "Reflection-based method invocation"
+  },
+  {
+    "pattern": "Activator.CreateInstance(",
+    "weight": 4,
+    "category": "reflective_load",
+    "description": "Dynamic object instantiation"
+  },
+  {
+    "pattern": "CSharpCodeProvider",
+    "weight": 8,
+    "category": "engine_codedom",
+    "description": "Runtime C# compilation via CodeDom"
+  },
+  {
+    "pattern": "CompileAssemblyFromSource",
+    "weight": 8,
+    "category": "engine_codedom",
+    "description": "CodeDom in-memory compilation"
+  },
+  {
+    "pattern": "GenerateInMemory",
+    "weight": 7,
+    "category": "engine_codedom",
+    "description": "CodeDom in-memory assembly generation flag"
+  },
+  {
+    "pattern": "CompilerParameters",
+    "weight": 4,
+    "category": "engine_codedom",
+    "description": "CodeDom compiler configuration"
+  },
+  {
+    "pattern": "ICLRMetaHost",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "CLR hosting interface for loading .NET runtime"
+  },
+  {
+    "pattern": "ICLRRuntimeInfo",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "CLR runtime info interface"
+  },
+  {
+    "pattern": "ICLRRuntimeHost",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "CLR runtime host for managed code execution"
+  },
+  {
+    "pattern": "ICorRuntimeHost",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "Legacy COM CLR host interface"
+  },
+  {
+    "pattern": "CLRCreateInstance",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "Win32 function to bootstrap CLR"
+  },
+  {
+    "pattern": "mscoree.dll",
+    "weight": 5,
+    "category": "reflective_load",
+    "description": ".NET CLR shim DLL (loaded by unmanaged hosts)"
+  },
+  {
+    "pattern": "mscorlib",
+    "weight": 3,
+    "category": "reflective_load",
+    "description": ".NET core library (low weight, ubiquitous)"
+  },
+  {
+    "pattern": "CorBindToRuntimeEx",
+    "weight": 8,
+    "category": "reflective_load",
+    "description": "Legacy CLR hosting bootstrap function"
+  },
+  {
+    "pattern": "ExecuteInDefaultAppDomain",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "CLR host method to run managed code"
+  },
+  {
+    "pattern": "donut_instance",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "Donut shellcode loader instance marker"
+  },
+  {
+    "pattern": "DotNetToJScript",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "DotNetToJScript .NET code from JScript/VBScript"
+  },
+  {
+    "pattern": "GhostPack",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "GhostPack offensive .NET toolkit namespace"
+  },
+  {
+    "pattern": "SharpSploit.Execution",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "SharpSploit execution namespace"
+  },
+  {
+    "pattern": "SharpSploit.Credentials",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "SharpSploit credential access namespace"
+  },
+  {
+    "pattern": "SharpSploit.Enumeration",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "SharpSploit enumeration namespace"
+  },
+  {
+    "pattern": "SharpSploit.LateralMovement",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "SharpSploit lateral movement namespace"
+  },
+  {
+    "pattern": "UnmanagedMemoryStream",
+    "weight": 4,
+    "category": "reflective_load",
+    "description": "Unmanaged memory stream (PE loading indicator)"
+  },
+  {
+    "pattern": "System.Reflection.Emit",
+    "weight": 5,
+    "category": "reflective_load",
+    "description": "Dynamic assembly generation namespace"
+  },
+  {
+    "pattern": "TypeBuilder.CreateType",
+    "weight": 6,
+    "category": "reflective_load",
+    "description": "Dynamic type creation (used in loaders)"
+  },
+  {
+    "pattern": "DynamicMethod",
+    "weight": 5,
+    "category": "reflective_load",
+    "description": "Dynamic method generation (shellcode runners)"
+  },
+  {
+    "pattern": "Marshal.GetDelegateForFunctionPointer",
+    "weight": 7,
+    "category": "reflective_load",
+    "description": "Delegate from native function pointer (shellcode exec)"
+  },
+  {
+    "pattern": "UnsafeNativeMethods",
+    "weight": 6,
+    "category": "reflective_load",
+    "description": "Common class name for P/Invoke in offensive tools"
+  }
+]

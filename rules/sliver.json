@@ -1,0 +1,152 @@
+[
+  {
+    "pattern": "sliverpb.",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Sliver implant protobuf package prefix"
+  },
+  {
+    "pattern": "sliver.SliverHTTPC2",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Sliver HTTP C2 handler struct"
+  },
+  {
+    "pattern": "sliver.SliverDNSC2",
+    "weight": 9,
+    "category": "c2_dns",
+    "description": "Sliver DNS C2 handler struct"
+  },
+  {
+    "pattern": "sliverpb.Envelope",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Sliver protobuf message envelope"
+  },
+  {
+    "pattern": "sliverpb.Register",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Sliver implant registration message"
+  },
+  {
+    "pattern": "sliverpb.Ping",
+    "weight": 7,
+    "category": "c2_http",
+    "description": "Sliver heartbeat message type"
+  },
+  {
+    "pattern": "sliverpb.PsReq",
+    "weight": 8,
+    "category": "webshell_generic",
+    "description": "Sliver process list request message"
+  },
+  {
+    "pattern": "sliverpb.LsReq",
+    "weight": 8,
+    "category": "webshell_generic",
+    "description": "Sliver directory list request message"
+  },
+  {
+    "pattern": "sliverpb.DownloadReq",
+    "weight": 8,
+    "category": "webshell_generic",
+    "description": "Sliver file download request message"
+  },
+  {
+    "pattern": "sliverpb.UploadReq",
+    "weight": 8,
+    "category": "webshell_generic",
+    "description": "Sliver file upload request message"
+  },
+  {
+    "pattern": "sliverpb.ExecuteReq",
+    "weight": 9,
+    "category": "webshell_generic",
+    "description": "Sliver command execution request"
+  },
+  {
+    "pattern": "sliverpb.Task",
+    "weight": 8,
+    "category": "c2_http",
+    "description": "Sliver tasking protobuf message"
+  },
+  {
+    "pattern": "sliverpb.InvokeExecuteAssemblyReq",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Sliver execute-assembly request (in-memory .NET)"
+  },
+  {
+    "pattern": "sliverpb.InvokeInProcExecuteAssemblyReq",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Sliver in-process assembly execution"
+  },
+  {
+    "pattern": "sliverpb.MigrateReq",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "Sliver process migration request"
+  },
+  {
+    "pattern": "sliverpb.SpawnDllReq",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "Sliver spawn DLL injection request"
+  },
+  {
+    "pattern": "sliverpb.SideloadReq",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "Sliver sideload DLL injection request"
+  },
+  {
+    "pattern": "sliverpb.ScreenshotReq",
+    "weight": 7,
+    "category": "webshell_generic",
+    "description": "Sliver screenshot capture request"
+  },
+  {
+    "pattern": "sliverpb.IfconfigReq",
+    "weight": 6,
+    "category": "webshell_generic",
+    "description": "Sliver network interface enumeration"
+  },
+  {
+    "pattern": "sliverpb.PivotStartListenerReq",
+    "weight": 9,
+    "category": "c2_tcp",
+    "description": "Sliver pivot listener request"
+  },
+  {
+    "pattern": "github.com/bishopfox/sliver",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Sliver Go module import path in binary"
+  },
+  {
+    "pattern": "StartBeaconLoop",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Sliver beacon mode loop function"
+  },
+  {
+    "pattern": "StartSessionLoop",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Sliver session mode loop function"
+  },
+  {
+    "pattern": "HTTPStartSession",
+    "weight": 8,
+    "category": "c2_http",
+    "description": "Sliver HTTP session init function"
+  },
+  {
+    "pattern": "WGStartPortFwd",
+    "weight": 7,
+    "category": "c2_tcp",
+    "description": "Sliver WireGuard port forward function"
+  }
+]

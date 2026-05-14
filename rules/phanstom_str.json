@@ -1,0 +1,452 @@
+[
+  {
+    "pattern": "msxsl:script",
+    "weight": 5,
+    "category": "engine_xslt",
+    "description": "XSLT script block declaration"
+  },
+  {
+    "pattern": "implements-prefix",
+    "weight": 4,
+    "category": "engine_xslt",
+    "description": "msxsl:script attribute"
+  },
+  {
+    "pattern": "urn:schemas-microsoft-com:xslt",
+    "weight": 5,
+    "category": "engine_xslt",
+    "description": "Microsoft XSLT namespace"
+  },
+  {
+    "pattern": "urn:payload",
+    "weight": 6,
+    "category": "engine_xslt",
+    "description": "Payload namespace from xslt_exec"
+  },
+  {
+    "pattern": "payload:Go()",
+    "weight": 6,
+    "category": "engine_xslt",
+    "description": "XSLT template calls payload:Go()"
+  },
+  {
+    "pattern": "XsltSettings",
+    "weight": 3,
+    "category": "engine_xslt",
+    "description": "XSLT settings object"
+  },
+  {
+    "pattern": "enableScript",
+    "weight": 4,
+    "category": "engine_xslt",
+    "description": "Dangerous XSLT script enable flag"
+  },
+  {
+    "pattern": "msxsl:assembly",
+    "weight": 4,
+    "category": "engine_xslt",
+    "description": "XSLT assembly reference"
+  },
+  {
+    "pattern": "msxsl:using",
+    "weight": 4,
+    "category": "engine_xslt",
+    "description": "XSLT namespace import"
+  },
+  {
+    "pattern": "public class _Payload",
+    "weight": 9,
+    "category": "engine_codedom",
+    "description": "Exact CodeDom wrapper class from xslt_exec"
+  },
+  {
+    "pattern": "CSharpCodeProvider",
+    "weight": 4,
+    "category": "engine_codedom",
+    "description": "C# runtime compiler class"
+  },
+  {
+    "pattern": "CompileAssemblyFromSource",
+    "weight": 5,
+    "category": "engine_codedom",
+    "description": "In-memory compilation method"
+  },
+  {
+    "pattern": "GenerateInMemory",
+    "weight": 4,
+    "category": "engine_codedom",
+    "description": "In-memory assembly generation flag"
+  },
+  {
+    "pattern": "_XSLT_ARG",
+    "weight": 8,
+    "category": "engine_codedom",
+    "description": "Env var used to pass arguments to payload"
+  },
+  {
+    "pattern": "CompilerParameters",
+    "weight": 3,
+    "category": "engine_codedom",
+    "description": "Compiler parameters object"
+  },
+  {
+    "pattern": "CompilerResults",
+    "weight": 3,
+    "category": "engine_codedom",
+    "description": "Compilation result object"
+  },
+  {
+    "pattern": "ManagedLoadAssembly",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Exact method name from xslt_exec"
+  },
+  {
+    "pattern": "RunManagedTask",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Exact method name from xslt_exec"
+  },
+  {
+    "pattern": "GetExportedTypes",
+    "weight": 4,
+    "category": "engine_managed",
+    "description": "Reflection to enumerate loaded types"
+  },
+  {
+    "pattern": "GetMethod(\"Run\"",
+    "weight": 6,
+    "category": "engine_managed",
+    "description": "Looking for Run() entry point"
+  },
+  {
+    "pattern": "GetMethod(\"Go\"",
+    "weight": 6,
+    "category": "engine_managed",
+    "description": "Looking for Go() entry point"
+  },
+  {
+    "pattern": "Invoke(null",
+    "weight": 3,
+    "category": "engine_managed",
+    "description": "Reflective method invocation"
+  },
+  {
+    "pattern": "FromBase64String",
+    "weight": 3,
+    "category": "engine_managed",
+    "description": "Base64 decode (assembly bytes)"
+  },
+  {
+    "pattern": "Assembly.Load(",
+    "weight": 3,
+    "category": "engine_managed",
+    "description": "Assembly reflective load call"
+  },
+  {
+    "pattern": "AGENT>",
+    "weight": 7,
+    "category": "c2_tcp",
+    "description": "TCP agent prompt string"
+  },
+  {
+    "pattern": "IIS Managed Agent",
+    "weight": 9,
+    "category": "c2_tcp",
+    "description": "TCP channel banner"
+  },
+  {
+    "pattern": "No cmd/shell",
+    "weight": 5,
+    "category": "c2_tcp",
+    "description": "TCP agent trust-level notice"
+  },
+  {
+    "pattern": "Process.Start blocked",
+    "weight": 5,
+    "category": "c2_tcp",
+    "description": "TCP agent trust restriction message"
+  },
+  {
+    "pattern": "/task",
+    "weight": 2,
+    "category": "c2_http",
+    "description": "HTTP beacon task endpoint"
+  },
+  {
+    "pattern": "/result",
+    "weight": 2,
+    "category": "c2_http",
+    "description": "HTTP beacon result endpoint"
+  },
+  {
+    "pattern": "/register",
+    "weight": 3,
+    "category": "c2_http",
+    "description": "HTTP beacon registration endpoint"
+  },
+  {
+    "pattern": "TechniqueHttpBeacon",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Exact method name from xslt_exec"
+  },
+  {
+    "pattern": "HTTP Beacon C2",
+    "weight": 8,
+    "category": "c2_http",
+    "description": "Technique banner string"
+  },
+  {
+    "pattern": "__c2_tasks",
+    "weight": 9,
+    "category": "c2_sql",
+    "description": "SQL C2 tasks table"
+  },
+  {
+    "pattern": "__c2_results",
+    "weight": 9,
+    "category": "c2_sql",
+    "description": "SQL C2 results table"
+  },
+  {
+    "pattern": "picked=0",
+    "weight": 6,
+    "category": "c2_sql",
+    "description": "SQL C2 task polling query"
+  },
+  {
+    "pattern": "TechniqueSqlC2",
+    "weight": 9,
+    "category": "c2_sql",
+    "description": "Exact method name from xslt_exec"
+  },
+  {
+    "pattern": "SQL C2 Dead Drop",
+    "weight": 8,
+    "category": "c2_sql",
+    "description": "Technique banner string"
+  },
+  {
+    "pattern": "TechniqueSmtpExfil",
+    "weight": 9,
+    "category": "c2_smtp",
+    "description": "Exact method name from xslt_exec"
+  },
+  {
+    "pattern": "SMTP Exfiltration",
+    "weight": 7,
+    "category": "c2_smtp",
+    "description": "Technique banner string"
+  },
+  {
+    "pattern": "smtp://",
+    "weight": 4,
+    "category": "c2_smtp",
+    "description": "SMTP URI scheme in memory"
+  },
+  {
+    "pattern": "TechniqueFileC2",
+    "weight": 9,
+    "category": "c2_file",
+    "description": "Exact method name from xslt_exec"
+  },
+  {
+    "pattern": "File-Based C2",
+    "weight": 7,
+    "category": "c2_file",
+    "description": "Technique banner string"
+  },
+  {
+    "pattern": "_cmd_",
+    "weight": 5,
+    "category": "c2_file",
+    "description": "File C2 command file prefix"
+  },
+  {
+    "pattern": "_res_",
+    "weight": 5,
+    "category": "c2_file",
+    "description": "File C2 result file prefix"
+  },
+  {
+    "pattern": "_probe.tmp",
+    "weight": 6,
+    "category": "c2_file",
+    "description": "File C2 probe file"
+  },
+  {
+    "pattern": "TechniqueDnsExfil",
+    "weight": 9,
+    "category": "c2_dns",
+    "description": "Exact method name from xslt_exec"
+  },
+  {
+    "pattern": "DNS Exfiltration",
+    "weight": 7,
+    "category": "c2_dns",
+    "description": "Technique banner string"
+  },
+  {
+    "pattern": "Dns.GetHostEntry",
+    "weight": 3,
+    "category": "c2_dns",
+    "description": "DNS resolution API call"
+  },
+  {
+    "pattern": "0xsp.com",
+    "weight": 9,
+    "category": "evasion",
+    "description": "Hardcoded access token from xslt_exec"
+  },
+  {
+    "pattern": "X-Auth-Token",
+    "weight": 5,
+    "category": "evasion",
+    "description": "Custom auth header for webshell access"
+  },
+  {
+    "pattern": "ALLOWED_HOSTS",
+    "weight": 6,
+    "category": "evasion",
+    "description": "Host whitelist array"
+  },
+  {
+    "pattern": "Send404",
+    "weight": 7,
+    "category": "evasion",
+    "description": "Fake 404 response method"
+  },
+  {
+    "pattern": "ENFORCE_HOST_CHECK",
+    "weight": 6,
+    "category": "evasion",
+    "description": "Access control flag"
+  },
+  {
+    "pattern": "ENFORCE_IP_CHECK",
+    "weight": 6,
+    "category": "evasion",
+    "description": "IP enforcement flag"
+  },
+  {
+    "pattern": "ValidateRequest=\"false\"",
+    "weight": 4,
+    "category": "evasion",
+    "description": "Request validation bypass"
+  },
+  {
+    "pattern": "ValidateRequestMode.Disabled",
+    "weight": 5,
+    "category": "evasion",
+    "description": "Request validation bypass (code)"
+  },
+  {
+    "pattern": "attacker2.yourdomain.com",
+    "weight": 9,
+    "category": "evasion",
+    "description": "Hardcoded attacker domain"
+  },
+  {
+    "pattern": "runat=\"server\"",
+    "weight": 1,
+    "category": "webshell_generic",
+    "description": "ASP.NET server-side directive in memory"
+  },
+  {
+    "pattern": "ProcessStartInfo",
+    "weight": 3,
+    "category": "webshell_generic",
+    "description": "Process execution setup"
+  },
+  {
+    "pattern": "cmd.exe /c",
+    "weight": 4,
+    "category": "webshell_generic",
+    "description": "Command execution pattern"
+  },
+  {
+    "pattern": "powershell -",
+    "weight": 4,
+    "category": "webshell_generic",
+    "description": "PowerShell execution"
+  },
+  {
+    "pattern": "ManagedCmd",
+    "weight": 8,
+    "category": "webshell_generic",
+    "description": "Exact method name from xslt_exec"
+  },
+  {
+    "pattern": "ManagedSysInfo",
+    "weight": 8,
+    "category": "webshell_generic",
+    "description": "Exact method name from xslt_exec"
+  },
+  {
+    "pattern": "ManagedLs",
+    "weight": 7,
+    "category": "webshell_generic",
+    "description": "Exact method name from xslt_exec"
+  },
+  {
+    "pattern": "ManagedReadFile",
+    "weight": 7,
+    "category": "webshell_generic",
+    "description": "Exact method name from xslt_exec"
+  },
+  {
+    "pattern": "ManagedWriteFile",
+    "weight": 7,
+    "category": "webshell_generic",
+    "description": "Exact method name from xslt_exec"
+  },
+  {
+    "pattern": "ManagedDownloadUrl",
+    "weight": 7,
+    "category": "webshell_generic",
+    "description": "Exact method name from xslt_exec"
+  },
+  {
+    "pattern": "ManagedEnvVars",
+    "weight": 7,
+    "category": "webshell_generic",
+    "description": "Exact method name from xslt_exec"
+  },
+  {
+    "pattern": "CheckEnvironment",
+    "weight": 5,
+    "category": "webshell_generic",
+    "description": "Environment probe method"
+  },
+  {
+    "pattern": "ProbeXsltEngine",
+    "weight": 8,
+    "category": "webshell_generic",
+    "description": "XSLT engine probe method"
+  },
+  {
+    "pattern": "ProbeCodeDomEngine",
+    "weight": 8,
+    "category": "webshell_generic",
+    "description": "CodeDom engine probe method"
+  },
+  {
+    "pattern": "ExecuteXslt",
+    "weight": 7,
+    "category": "webshell_generic",
+    "description": "XSLT execution dispatcher"
+  },
+  {
+    "pattern": "ExecuteCodeDom",
+    "weight": 7,
+    "category": "webshell_generic",
+    "description": "CodeDom execution dispatcher"
+  },
+  {
+    "pattern": "ExecuteManaged",
+    "weight": 7,
+    "category": "webshell_generic",
+    "description": "Managed execution dispatcher"
+  }
+]

@@ -1,0 +1,206 @@
+[
+  {
+    "pattern": "Rubeus.Program",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Rubeus Kerberos attack tool main class"
+  },
+  {
+    "pattern": "Rubeus.lib.Interop",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Rubeus P/Invoke interop namespace"
+  },
+  {
+    "pattern": "Rubeus.Domain",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Rubeus domain enumeration namespace"
+  },
+  {
+    "pattern": "asktgt",
+    "weight": 6,
+    "category": "engine_managed",
+    "description": "Rubeus TGT request command"
+  },
+  {
+    "pattern": "asktgs",
+    "weight": 6,
+    "category": "engine_managed",
+    "description": "Rubeus TGS request command"
+  },
+  {
+    "pattern": "kerberoast",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Rubeus Kerberoasting command"
+  },
+  {
+    "pattern": "asreproast",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Rubeus AS-REP roasting command"
+  },
+  {
+    "pattern": "ptt /ticket:",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Rubeus pass-the-ticket invocation"
+  },
+  {
+    "pattern": "s4u /impersonateuser:",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Rubeus S4U delegation abuse"
+  },
+  {
+    "pattern": "Seatbelt.Program",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Seatbelt host survey tool main class"
+  },
+  {
+    "pattern": "Seatbelt.Commands",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Seatbelt command namespace"
+  },
+  {
+    "pattern": "SeatbeltCommand",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Seatbelt command interface"
+  },
+  {
+    "pattern": "SharpHound.Program",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "SharpHound BloodHound collector main class"
+  },
+  {
+    "pattern": "SharpHound.Collectors",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "SharpHound data collection namespace"
+  },
+  {
+    "pattern": "SharpHound.Client",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "SharpHound LDAP client class"
+  },
+  {
+    "pattern": "Certify.Program",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Certify ADCS abuse tool main class"
+  },
+  {
+    "pattern": "Certify.Commands",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Certify command namespace"
+  },
+  {
+    "pattern": "Certify.Domain",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "Certify domain enumeration"
+  },
+  {
+    "pattern": "SharpDPAPI.Program",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "SharpDPAPI credential theft tool"
+  },
+  {
+    "pattern": "SharpUp.Program",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "SharpUp privilege escalation checker"
+  },
+  {
+    "pattern": "SharpView.Program",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "SharpView domain enumeration tool"
+  },
+  {
+    "pattern": "SharpWMI.Program",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "SharpWMI lateral movement tool"
+  },
+  {
+    "pattern": "SharpChrome.Program",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "SharpChrome credential stealer"
+  },
+  {
+    "pattern": "SharpRDP.Program",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "SharpRDP lateral movement via RDP"
+  },
+  {
+    "pattern": "SharpSecDump.Program",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "SharpSecDump remote SAM/LSA dumper"
+  },
+  {
+    "pattern": "Watson.Program",
+    "weight": 7,
+    "category": "engine_managed",
+    "description": "Watson privilege escalation finder"
+  },
+  {
+    "pattern": "ADFSDump.Program",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "ADFSDump Golden SAML attack tool"
+  },
+  {
+    "pattern": "SharpKatz.Program",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "SharpKatz .NET mimikatz port"
+  },
+  {
+    "pattern": "SafetyKatz.Program",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "SafetyKatz minidump+mimikatz combo"
+  },
+  {
+    "pattern": "BetterSafetyKatz.Program",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "BetterSafetyKatz improved safety katz variant"
+  },
+  {
+    "pattern": "InternalMonologue.Program",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "InternalMonologue NetNTLM hash capture"
+  },
+  {
+    "pattern": "SharpSploit",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "SharpSploit .NET post-exploitation library"
+  },
+  {
+    "pattern": "Covenant.Agent",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Covenant/GruntStager C2 agent class"
+  },
+  {
+    "pattern": "GruntStager",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Covenant Grunt stager class name"
+  }
+]

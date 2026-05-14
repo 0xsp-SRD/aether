@@ -1,0 +1,146 @@
+[
+  {
+    "pattern": "badger_config",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Brute Ratel badger configuration blob"
+  },
+  {
+    "pattern": "badger.x64.o",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "BRc4 64-bit COFF loader object"
+  },
+  {
+    "pattern": "badger.x86.o",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "BRc4 32-bit COFF loader object"
+  },
+  {
+    "pattern": "BruteRatel",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Brute Ratel product string in memory"
+  },
+  {
+    "pattern": "brute_ratel",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "BRc4 underscore variant product string"
+  },
+  {
+    "pattern": "brc4.license",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "BRc4 license marker in config"
+  },
+  {
+    "pattern": "badger_sleep",
+    "weight": 8,
+    "category": "c2_http",
+    "description": "BRc4 badger sleep configuration"
+  },
+  {
+    "pattern": "badger_jitter",
+    "weight": 8,
+    "category": "c2_http",
+    "description": "BRc4 badger jitter configuration"
+  },
+  {
+    "pattern": "badger_obfuscate",
+    "weight": 8,
+    "category": "c2_http",
+    "description": "BRc4 obfuscation configuration"
+  },
+  {
+    "pattern": "rotateC2",
+    "weight": 7,
+    "category": "c2_http",
+    "description": "BRc4 C2 rotation feature"
+  },
+  {
+    "pattern": "badger_morphcode",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "BRc4 polymorphic code engine"
+  },
+  {
+    "pattern": "bofnet_execute",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "BRc4 BOF.NET execution command"
+  },
+  {
+    "pattern": "coffexec",
+    "weight": 7,
+    "category": "reflective_load",
+    "description": "BRc4 COFF object execution"
+  },
+  {
+    "pattern": "run_dotnet",
+    "weight": 8,
+    "category": "engine_managed",
+    "description": "BRc4 inline .NET assembly execution"
+  },
+  {
+    "pattern": "shcRdi",
+    "weight": 8,
+    "category": "reflective_load",
+    "description": "Shellcode reflective DLL injection (used by BRc4)"
+  },
+  {
+    "pattern": "syscall_inject",
+    "weight": 8,
+    "category": "reflective_load",
+    "description": "BRc4 direct syscall injection"
+  },
+  {
+    "pattern": "phantom_thread",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "BRc4 thread hiding technique"
+  },
+  {
+    "pattern": "stackspoof",
+    "weight": 8,
+    "category": "reflective_load",
+    "description": "BRc4 call stack spoofing"
+  },
+  {
+    "pattern": "http_listener",
+    "weight": 4,
+    "category": "c2_http",
+    "description": "BRc4 HTTP listener config"
+  },
+  {
+    "pattern": "smb_listener",
+    "weight": 5,
+    "category": "c2_tcp",
+    "description": "BRc4 SMB pipe listener config"
+  },
+  {
+    "pattern": "doh_listener",
+    "weight": 7,
+    "category": "c2_dns",
+    "description": "BRc4 DNS-over-HTTPS listener config"
+  },
+  {
+    "pattern": "profile_loader",
+    "weight": 6,
+    "category": "c2_http",
+    "description": "BRc4 malleable C2 profile loader"
+  },
+  {
+    "pattern": "NtQueueApcThread",
+    "weight": 6,
+    "category": "reflective_load",
+    "description": "Early bird APC injection used by BRc4"
+  },
+  {
+    "pattern": "NtAllocateVirtualMemory",
+    "weight": 4,
+    "category": "reflective_load",
+    "description": "Direct syscall for memory allocation"
+  }
+]

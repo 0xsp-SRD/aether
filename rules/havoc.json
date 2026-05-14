@@ -1,0 +1,152 @@
+[
+  {
+    "pattern": "HavocFramework",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Havoc framework identifier in memory"
+  },
+  {
+    "pattern": "havoc.demon",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Havoc demon implant class path"
+  },
+  {
+    "pattern": "DemonInit",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Havoc demon initialization routine"
+  },
+  {
+    "pattern": "DemonMain",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Havoc demon main entry point"
+  },
+  {
+    "pattern": "DemonConfig",
+    "weight": 8,
+    "category": "c2_http",
+    "description": "Havoc demon configuration struct"
+  },
+  {
+    "pattern": "DemonMetaData",
+    "weight": 8,
+    "category": "c2_http",
+    "description": "Havoc demon host metadata struct"
+  },
+  {
+    "pattern": "DemonCommand",
+    "weight": 8,
+    "category": "c2_http",
+    "description": "Havoc demon command dispatcher"
+  },
+  {
+    "pattern": "DemonSleep",
+    "weight": 7,
+    "category": "c2_http",
+    "description": "Havoc demon sleep obfuscation routine"
+  },
+  {
+    "pattern": "DemonRoutine",
+    "weight": 8,
+    "category": "c2_http",
+    "description": "Havoc demon main loop routine"
+  },
+  {
+    "pattern": "DemonTransport",
+    "weight": 7,
+    "category": "c2_http",
+    "description": "Havoc demon transport layer"
+  },
+  {
+    "pattern": "DEMON_MAGIC_VALUE",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Havoc protocol magic constant"
+  },
+  {
+    "pattern": "DEMON_INIT_CHECKIN",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Havoc initial check-in command ID"
+  },
+  {
+    "pattern": "DEMON_COMMAND_INLINE_EXECUTE",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "Havoc BOF inline execution command"
+  },
+  {
+    "pattern": "COMMAND_ASSEMBLY_INLINE_EXECUTE",
+    "weight": 9,
+    "category": "engine_managed",
+    "description": "Havoc inline .NET assembly execution"
+  },
+  {
+    "pattern": "COMMAND_ASSEMBLY_LIST_VERSIONS",
+    "weight": 7,
+    "category": "engine_managed",
+    "description": "Havoc CLR version enumeration"
+  },
+  {
+    "pattern": "COMMAND_TOKEN",
+    "weight": 5,
+    "category": "webshell_generic",
+    "description": "Havoc token manipulation command group"
+  },
+  {
+    "pattern": "COMMAND_INJECT_DLL",
+    "weight": 8,
+    "category": "reflective_load",
+    "description": "Havoc DLL injection command"
+  },
+  {
+    "pattern": "COMMAND_INJECT_SHELLCODE",
+    "weight": 8,
+    "category": "reflective_load",
+    "description": "Havoc shellcode injection command"
+  },
+  {
+    "pattern": "COMMAND_PROC_PPID",
+    "weight": 7,
+    "category": "webshell_generic",
+    "description": "Havoc parent PID spoofing command"
+  },
+  {
+    "pattern": "COMMAND_PROC_MODULES",
+    "weight": 6,
+    "category": "webshell_generic",
+    "description": "Havoc loaded module enumeration"
+  },
+  {
+    "pattern": "SleepObf",
+    "weight": 7,
+    "category": "c2_http",
+    "description": "Havoc sleep obfuscation (Ekko/Foliage)"
+  },
+  {
+    "pattern": "SysNative",
+    "weight": 4,
+    "category": "reflective_load",
+    "description": "Havoc direct syscall wrapper prefix"
+  },
+  {
+    "pattern": "CoffeeExecute",
+    "weight": 8,
+    "category": "reflective_load",
+    "description": "Havoc COFF/BOF execution engine"
+  },
+  {
+    "pattern": "CoffeeLdr",
+    "weight": 8,
+    "category": "reflective_load",
+    "description": "Havoc COFF loader component"
+  },
+  {
+    "pattern": "PackageTransmit",
+    "weight": 7,
+    "category": "c2_http",
+    "description": "Havoc package data exfiltration"
+  }
+]

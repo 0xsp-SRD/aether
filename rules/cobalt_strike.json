@@ -1,0 +1,218 @@
+[
+  {
+    "pattern": "beacon.dll",
+    "weight": 8,
+    "category": "c2_http",
+    "description": "Cobalt Strike beacon DLL name in memory"
+  },
+  {
+    "pattern": "beacon.x64.dll",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Cobalt Strike 64-bit beacon DLL"
+  },
+  {
+    "pattern": "beacon.x86.dll",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "Cobalt Strike 32-bit beacon DLL"
+  },
+  {
+    "pattern": "ReflectiveLoader",
+    "weight": 7,
+    "category": "reflective_load",
+    "description": "Reflective DLL injection export used by CS beacon"
+  },
+  {
+    "pattern": "%s.4444",
+    "weight": 6,
+    "category": "c2_tcp",
+    "description": "CS default named pipe format string"
+  },
+  {
+    "pattern": "\\\\.\\pipe\\msagent_",
+    "weight": 8,
+    "category": "c2_tcp",
+    "description": "CS default SMB named pipe prefix"
+  },
+  {
+    "pattern": "\\\\.\\pipe\\MSSE-",
+    "weight": 8,
+    "category": "c2_tcp",
+    "description": "CS default SMB beacon pipe (MSSE-)"
+  },
+  {
+    "pattern": "\\\\.\\pipe\\postex_",
+    "weight": 9,
+    "category": "c2_tcp",
+    "description": "CS post-exploitation named pipe prefix"
+  },
+  {
+    "pattern": "\\\\.\\pipe\\postex_ssh_",
+    "weight": 9,
+    "category": "c2_tcp",
+    "description": "CS post-ex SSH pivot pipe"
+  },
+  {
+    "pattern": "\\\\.\\pipe\\status_",
+    "weight": 6,
+    "category": "c2_tcp",
+    "description": "CS beacon status pipe"
+  },
+  {
+    "pattern": "IEX (New-Object Net.Webclient).DownloadString",
+    "weight": 7,
+    "category": "engine_managed",
+    "description": "CS default PowerShell download cradle"
+  },
+  {
+    "pattern": "%02d/%02d/%02d %02d:%02d:%02d",
+    "weight": 5,
+    "category": "c2_http",
+    "description": "CS beacon timestamp format string"
+  },
+  {
+    "pattern": "could not spawn %s: %d",
+    "weight": 8,
+    "category": "webshell_generic",
+    "description": "CS spawn error message format"
+  },
+  {
+    "pattern": "Could not open process token: %d (%u)",
+    "weight": 7,
+    "category": "webshell_generic",
+    "description": "CS token manipulation error message"
+  },
+  {
+    "pattern": "could not connect to pipe",
+    "weight": 5,
+    "category": "c2_tcp",
+    "description": "CS named pipe connection error"
+  },
+  {
+    "pattern": "Could not create service: %d",
+    "weight": 7,
+    "category": "webshell_generic",
+    "description": "CS service creation error format"
+  },
+  {
+    "pattern": "%s as %s\\%s: %d",
+    "weight": 6,
+    "category": "webshell_generic",
+    "description": "CS impersonation log format string"
+  },
+  {
+    "pattern": "Started service %s on %s",
+    "weight": 6,
+    "category": "webshell_generic",
+    "description": "CS lateral movement service start message"
+  },
+  {
+    "pattern": "beacon_metadata",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "CS beacon metadata struct marker"
+  },
+  {
+    "pattern": "beacon_keys",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "CS beacon cryptographic key marker"
+  },
+  {
+    "pattern": "Content-Type: application/octet-stream",
+    "weight": 3,
+    "category": "c2_http",
+    "description": "CS beacon default POST content type"
+  },
+  {
+    "pattern": "libwinhttp.dll",
+    "weight": 5,
+    "category": "c2_http",
+    "description": "CS WinHTTP comms library marker"
+  },
+  {
+    "pattern": "poison_handler",
+    "weight": 8,
+    "category": "c2_http",
+    "description": "CS malleable C2 poison handler"
+  },
+  {
+    "pattern": "spawnto_x86",
+    "weight": 9,
+    "category": "webshell_generic",
+    "description": "CS beacon config spawnto 32-bit"
+  },
+  {
+    "pattern": "spawnto_x64",
+    "weight": 9,
+    "category": "webshell_generic",
+    "description": "CS beacon config spawnto 64-bit"
+  },
+  {
+    "pattern": "pipename",
+    "weight": 3,
+    "category": "c2_tcp",
+    "description": "CS beacon config pipe name key"
+  },
+  {
+    "pattern": "killdate",
+    "weight": 5,
+    "category": "c2_http",
+    "description": "CS beacon kill date configuration"
+  },
+  {
+    "pattern": "sleeptime",
+    "weight": 4,
+    "category": "c2_http",
+    "description": "CS beacon sleep interval config"
+  },
+  {
+    "pattern": "watermark",
+    "weight": 5,
+    "category": "c2_http",
+    "description": "CS beacon license watermark field"
+  },
+  {
+    "pattern": ".post-ex.",
+    "weight": 6,
+    "category": "webshell_generic",
+    "description": "CS post-exploitation module config prefix"
+  },
+  {
+    "pattern": "HeapAlloc, address",
+    "weight": 7,
+    "category": "reflective_load",
+    "description": "CS heap allocation debug string"
+  },
+  {
+    "pattern": "Tasked beacon to",
+    "weight": 9,
+    "category": "c2_http",
+    "description": "CS operator tasking acknowledgement"
+  },
+  {
+    "pattern": "bUsesCookies",
+    "weight": 8,
+    "category": "c2_http",
+    "description": "CS malleable C2 config cookie flag"
+  },
+  {
+    "pattern": "bProcInject_StartRWX",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "CS process injection RWX config"
+  },
+  {
+    "pattern": "bProcInject_UseRWX",
+    "weight": 9,
+    "category": "reflective_load",
+    "description": "CS process injection RWX flag"
+  },
+  {
+    "pattern": "bProcInject_MinAllocSize",
+    "weight": 8,
+    "category": "reflective_load",
+    "description": "CS process injection minimum alloc size"
+  }
+]
