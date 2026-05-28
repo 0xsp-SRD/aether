@@ -336,6 +336,14 @@ pub fn isExecutable(protect: DWORD) bool {
     return (protect & executable) != 0;
 }
 
+pub fn isWritableNotExecutable(protect: DWORD) bool {
+    if (protect & PAGE_GUARD != 0) return false;
+    if (protect & PAGE_NOACCESS != 0) return false;
+    if (isExecutable(protect)) return false;
+    const writable = PAGE_READWRITE | PAGE_WRITECOPY;
+    return (protect & writable) != 0;
+}
+
 pub fn wideToSlice(wide: []const u16) []const u16 {
     for (wide, 0..) |c, i| {
         if (c == 0) return wide[0..i];
