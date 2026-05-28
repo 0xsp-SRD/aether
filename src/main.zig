@@ -44,7 +44,7 @@ const USAGE =
     \\  --rules, -r <dir>     Rules directory (default: rules/)
     \\  --config, -c <file>   Single rule file (legacy)
     \\  --help, -h            Show this help
-    \\  --hunt,               hunt beaconing in a process.
+    \\  --hunt PID MS DUR     hunt beaconing: poll every MS ms for DUR seconds.
     \\  --dump PID OFF SIZE   dump memory region. OFF is hex (e.g. 0x7FFE...);
     \\                        SIZE is bytes in decimal (e.g. 12068), or hex
     \\                        with explicit 0x prefix. Default: stops at first
@@ -57,7 +57,7 @@ const USAGE =
     \\  aether.exe --scan --pid 4820 --json --rules rules/
     \\  aether.exe --pid 1234 --config rules/cobalt_strike.json
     \\  aether.exe --scan-all --json
-    \\  aether.exe --hunt 4890 2000 30
+    \\  aether.exe --hunt 4890 2000 120
     \\ # Dump 8192 bytes starting at 0x7FFE2A100000 from PID 4820
     \\  aether.exe --dump 4820 0x7FFE2A100000 8192
     \\ # Dump 1 MB (1048576 bytes)
@@ -105,8 +105,8 @@ const Args = struct {
 
 const HuntsConfig = struct {
     pid: u32,
-    min_hits: u32 = 2000,
-    sleep_ms: u32 = 3,
+    sleep_ms: u32 = 2000,
+    duration_s: u32 = 120,
 };
 const DumpConfig = struct {
     pid: u32,
@@ -151,7 +151,7 @@ fn parseArgs() Args {
     var hunt_args_left: u8 = 0;
     var hunt_pid: u32 = undefined;
     var hunt_sleep: u32 = 2000;
-    var hunt_hits: u32 = 3;
+    var hunt_duration: u32 = 120;
 
     var i: usize = 1;
     while (i < argv_count) : (i += 1) {
@@ -164,8 +164,8 @@ fn parseArgs() Args {
             } else if (hunt_args_left == 1) {
                 hunt_sleep = std.fmt.parseInt(u32, arg, 10) catch hunt_sleep;
             } else {
-                hunt_hits = std.fmt.parseInt(u32, arg, 10) catch hunt_hits;
-                args_result.hunt = .{ .pid = hunt_pid, .sleep_ms = hunt_sleep, .min_hits = hunt_hits };
+                hunt_duration = std.fmt.parseInt(u32, arg, 10) catch hunt_duration;
+                args_result.hunt = .{ .pid = hunt_pid, .sleep_ms = hunt_sleep, .duration_s = hunt_duration };
             }
             continue;
         }
@@ -573,30 +573,20 @@ pub fn main(init: std.process.Init) !void {
         return;
     }
 
-    // end of mem dump section args
     if (args.hunt) |cfg| {
-        std.debug.print("PID {d}", .{cfg.pid});
+        err_out.print("[*] Monitoring PID {d} for beacon patterns (poll every {d}ms, duration {d}s)...\n", .{
+            cfg.pid, cfg.sleep_ms, cfg.duration_s,
+        });
+
         var monitor = netstat.ConnectionMonitor.init(allocator, cfg.pid);
         defer monitor.deinit();
 
-        // Poll multiple times with a delay
-        for (0..15) |_| {
+        const deadline_ms: u64 = w.GetTickCount64() + @as(u64, cfg.duration_s) * 1000;
+        while (w.GetTickCount64() < deadline_ms) {
             try monitor.poll();
-            //   std.time.sleep(2 * std.time.ns_per_s); // 2 second delay
             w.Sleep(cfg.sleep_ms);
         }
 
-        // Check for beaconing patterns
-        //
-        const beacons = try monitor.huntBeacons(cfg.min_hits); // 3+ hits = suspicious
-        defer allocator.free(beacons);
-
-        if (beacons.len > 0) {
-            err_out.print("[!] Possible C2 beaconing detected ({d} endpoints):\n", .{beacons.len});
-        }
-
-        // Print full report
-        //
         try monitor.reporting(err_out);
     }
     if (args.help) {
