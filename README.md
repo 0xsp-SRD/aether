@@ -291,17 +291,6 @@ Copy `zig-out/bin/Aether.exe` and the `rules/` directory to the target
 Windows machine if you want to perform additional signature scan. if the target process requires Administrative privileges, you need to run Aether.exe with Administrator privileges. 
 
 
-## Why Zig?
-
-| Property | Benefit |
-|----------|---------|
-| **No runtime, no GC** | Single ~1 MB `.exe` — deploy anywhere |
-| **Direct C FFI** | `extern "kernel32" fn ...` — zero-overhead Win32 calls |
-| **Cross-compilation** | Build Windows `.exe` from Linux or macOS |
-| **Compile-time safety** | Out-of-bounds, null pointer, integer overflow caught before deployment |
-| **`defer` / `orelse` / `try`** | Clean, deterministic resource management — no exceptions, no RAII |
-| **`comptime`** | Format strings type-checked, first-byte index built at compile time |
-
 
 ## Limitations
 
