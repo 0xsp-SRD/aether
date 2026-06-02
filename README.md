@@ -270,8 +270,8 @@ the decrypted PE for analysis.
 ### Build
 
 ```bash
-git clone https://github.com/
-cd Aether
+git clone https://github.com/0xsp-SRD/aether
+cd aether
 
 # Debug build (safety checks enabled)
 zig build
