@@ -29,6 +29,7 @@ const BANNER =
     \\    Docs: https://0xsp.com/docs/aether-getting-started/
     \\    Tag: Stable - v0.9
     \\
+    \\
 ;
 
 const USAGE =
@@ -46,6 +47,7 @@ const USAGE =
     \\  --config, -c <file>   Single rule file (legacy)
     \\  --help, -h            Show this help
     \\  --hunt PID MS DUR     hunt beaconing: poll every MS ms for DUR seconds.
+    \\  --read PID OFF SIZE   read memory region live on terminal.
     \\  --dump PID OFF SIZE   dump memory region. OFF is hex (e.g. 0x7FFE...);
     \\                        SIZE is bytes in decimal (e.g. 12068), or hex
     \\                        with explicit 0x prefix. Default: stops at first
