@@ -43,6 +43,27 @@ pub const Scanner = struct {
         try s.buildIndex();
         return s;
     }
+
+    /// Build a valid scanner with zero loaded signatures - lets the
+    /// structural-only scan path proceed without special-casing throughout
+    /// `walkAndScan`. Rule scanning is a no-op (empty index, empty list).
+    pub fn initEmpty(allocator: std.mem.Allocator) !Scanner {
+        var s = Scanner{
+            .loaded = .{
+                .merged_sigs = try allocator.alloc(sigs.Signature, 0),
+                .raw_buffers = .empty,
+                .parsed_list = .empty,
+                .allocator = allocator,
+            },
+            .ascii_index = undefined,
+            .utf16_index = undefined,
+            .index_storage = &.{},
+            .allocator = allocator,
+        };
+        try s.buildIndex();
+        return s;
+    }
+
     pub fn deinit(self: *Scanner) void {
         self.allocator.free(self.index_storage);
         self.loaded.deinit();
@@ -267,7 +288,7 @@ pub const ScanResults = struct {
         try self.hits.append(self.gpa, hit);
         const sig = &self.signatures[hit.sig_index];
         const ci = @intFromEnum(sig.category);
-        self.category_scores[ci].score += sig.weight;
+        self.category_scores[ci].score += sig.risk_score;
         self.category_scores[ci].hit_count += 1;
         if (self.category_scores[ci].first_offset == 0) {
             self.category_scores[ci].first_offset = hit.region_base + hit.offset;
@@ -509,10 +530,12 @@ const SpoofTrampolineCache = struct {
 };
 var spoof_cache: SpoofTrampolineCache = .{};
 
+///
 /// Spoof-target denylist: function names that legitimate code essentially
 /// never sets as `Win32StartAddress`, but which APC / EarlyBird shellcode
 /// loaders frequently spoof to. Walks kernel32 / ntdll / shell32 / advapi32.
 /// this list is prepared based on common vector presence, could be modified/add/delete.
+///
 const SPOOF_TARGETS = [_]struct { dll: [*:0]const u8, name: [*:0]const u8 }{
     .{ .dll = "kernel32", .name = "LoadLibraryA" },
     .{ .dll = "kernel32", .name = "LoadLibraryW" },
@@ -696,10 +719,6 @@ fn classifyAddress(
 ) ThreadVerdict {
     if (addr == 0) return emptyVerdict(0, .query_failed);
 
-    //
-    // Spoof-trampoline check first - even an "OK" module address is
-    // suspicious if it's one of the well-known APC targets.(expermintal)
-    //
     if (isSpoofTrampoline(addr)) {
         return .{
             .thread_id = 0,
@@ -788,7 +807,6 @@ fn classifyAddressFallback(addr: usize, module_map: anytype) ThreadVerdict {
 }
 
 /// `mod_opt` must be `?*const ModuleInfo`. Callers should pass `null`
-/// explicitly if no module is associated with the verdict.
 fn makeVerdictWithName(addr: usize, st: ThreadStatus, mod_opt: anytype) ThreadVerdict {
     var name_buf: [64]u8 = [_]u8{0} ** 64;
     var name_len: usize = 0;

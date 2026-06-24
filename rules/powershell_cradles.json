@@ -1,241 +1,241 @@
 [
   {
     "pattern": "IEX (New-Object Net.WebClient).DownloadString",
-    "weight": 8,
+    "risk_score": 8,
     "category": "engine_managed",
     "description": "Classic PowerShell download cradle"
   },
   {
     "pattern": "Invoke-Expression (New-Object Net.WebClient).DownloadString",
-    "weight": 8,
+    "risk_score": 8,
     "category": "engine_managed",
     "description": "Full Invoke-Expression download cradle"
   },
   {
     "pattern": "Net.WebClient).DownloadData",
-    "weight": 7,
+    "risk_score": 7,
     "category": "engine_managed",
     "description": "PowerShell binary download cradle"
   },
   {
     "pattern": "Invoke-WebRequest -Uri",
-    "weight": 5,
+    "risk_score": 5,
     "category": "engine_managed",
     "description": "PowerShell Invoke-WebRequest download"
   },
   {
     "pattern": "[System.Reflection.Assembly]::Load(",
-    "weight": 8,
+    "risk_score": 8,
     "category": "reflective_load",
     "description": "PowerShell reflective assembly load"
   },
   {
     "pattern": "[Reflection.Assembly]::Load(",
-    "weight": 8,
+    "risk_score": 8,
     "category": "reflective_load",
     "description": "PowerShell reflective assembly load (short)"
   },
   {
     "pattern": "System.Reflection.Assembly]::LoadFile",
-    "weight": 6,
+    "risk_score": 6,
     "category": "reflective_load",
     "description": "PowerShell assembly load from file"
   },
   {
     "pattern": "Add-Type -TypeDefinition",
-    "weight": 5,
+    "risk_score": 5,
     "category": "engine_managed",
     "description": "PowerShell inline C# compilation"
   },
   {
     "pattern": "Add-Type -MemberDefinition",
-    "weight": 6,
+    "risk_score": 6,
     "category": "engine_managed",
     "description": "PowerShell P/Invoke definition via Add-Type"
   },
   {
     "pattern": "[Runtime.InteropServices.Marshal]::",
-    "weight": 7,
+    "risk_score": 7,
     "category": "reflective_load",
     "description": "PowerShell memory marshalling for shellcode"
   },
   {
     "pattern": "VirtualAlloc",
-    "weight": 5,
+    "risk_score": 5,
     "category": "reflective_load",
     "description": "Win32 memory allocation in PowerShell context"
   },
   {
     "pattern": "VirtualProtect",
-    "weight": 5,
+    "risk_score": 5,
     "category": "reflective_load",
     "description": "Win32 memory protection change in PowerShell"
   },
   {
     "pattern": "kernel32.dll",
-    "weight": 3,
+    "risk_score": 3,
     "category": "reflective_load",
-    "description": "Kernel32 P/Invoke reference (low weight, very common)"
+    "description": "Kernel32 P/Invoke reference (low risk_score, very common)"
   },
   {
     "pattern": "AmsiScanBuffer",
-    "weight": 8,
+    "risk_score": 8,
     "category": "engine_managed",
     "description": "AMSI scan function targeted for bypass"
   },
   {
     "pattern": "amsiInitFailed",
-    "weight": 9,
+    "risk_score": 9,
     "category": "engine_managed",
     "description": "AMSI initialization failure bypass variable"
   },
   {
     "pattern": "AmsiUtils",
-    "weight": 8,
+    "risk_score": 8,
     "category": "engine_managed",
     "description": "AMSI utility class targeted for reflection bypass"
   },
   {
     "pattern": "System.Management.Automation.AmsiUtils",
-    "weight": 9,
+    "risk_score": 9,
     "category": "engine_managed",
     "description": "Full AMSI utility class path for bypass"
   },
   {
     "pattern": "SetValue($null,$true)",
-    "weight": 7,
+    "risk_score": 7,
     "category": "engine_managed",
     "description": "Reflection-based AMSI bypass field set"
   },
   {
     "pattern": "Invoke-Mimikatz",
-    "weight": 9,
+    "risk_score": 9,
     "category": "engine_managed",
     "description": "PowerSploit Invoke-Mimikatz module"
   },
   {
     "pattern": "Invoke-Shellcode",
-    "weight": 9,
+    "risk_score": 9,
     "category": "reflective_load",
     "description": "PowerSploit Invoke-Shellcode module"
   },
   {
     "pattern": "Invoke-ReflectivePEInjection",
-    "weight": 9,
+    "risk_score": 9,
     "category": "reflective_load",
     "description": "PowerSploit reflective PE injection"
   },
   {
     "pattern": "Invoke-TokenManipulation",
-    "weight": 8,
+    "risk_score": 8,
     "category": "engine_managed",
     "description": "PowerSploit token manipulation"
   },
   {
     "pattern": "Invoke-Kerberoast",
-    "weight": 9,
+    "risk_score": 9,
     "category": "engine_managed",
     "description": "PowerView Kerberoasting module"
   },
   {
     "pattern": "Invoke-DCSync",
-    "weight": 9,
+    "risk_score": 9,
     "category": "engine_managed",
     "description": "PowerView DCSync attack module"
   },
   {
     "pattern": "Invoke-PowerShellTcp",
-    "weight": 8,
+    "risk_score": 8,
     "category": "c2_tcp",
     "description": "Nishang PowerShell TCP reverse shell"
   },
   {
     "pattern": "Invoke-PowerShellUdp",
-    "weight": 8,
+    "risk_score": 8,
     "category": "c2_tcp",
     "description": "Nishang PowerShell UDP reverse shell"
   },
   {
     "pattern": "Get-GPPPassword",
-    "weight": 8,
+    "risk_score": 8,
     "category": "engine_managed",
     "description": "Group Policy Preferences password extraction"
   },
   {
     "pattern": "Get-Keystrokes",
-    "weight": 7,
+    "risk_score": 7,
     "category": "engine_managed",
     "description": "PowerSploit keylogger module"
   },
   {
     "pattern": "Find-LocalAdminAccess",
-    "weight": 7,
+    "risk_score": 7,
     "category": "engine_managed",
     "description": "PowerView local admin enumeration"
   },
   {
     "pattern": "Get-NetDomain",
-    "weight": 5,
+    "risk_score": 5,
     "category": "engine_managed",
     "description": "PowerView domain enumeration"
   },
   {
     "pattern": "PowerView",
-    "weight": 7,
+    "risk_score": 7,
     "category": "engine_managed",
     "description": "PowerView enumeration toolkit name"
   },
   {
     "pattern": "PowerSploit",
-    "weight": 8,
+    "risk_score": 8,
     "category": "engine_managed",
     "description": "PowerSploit post-exploitation framework"
   },
   {
     "pattern": "[System.Convert]::FromBase64String",
-    "weight": 5,
+    "risk_score": 5,
     "category": "engine_managed",
     "description": "Base64 decode often used in staged payloads"
   },
   {
     "pattern": "-EncodedCommand",
-    "weight": 6,
+    "risk_score": 6,
     "category": "engine_managed",
     "description": "PowerShell encoded command execution"
   },
   {
     "pattern": "-ep bypass",
-    "weight": 5,
+    "risk_score": 5,
     "category": "engine_managed",
     "description": "PowerShell execution policy bypass"
   },
   {
     "pattern": "-ExecutionPolicy Bypass",
-    "weight": 5,
+    "risk_score": 5,
     "category": "engine_managed",
     "description": "PowerShell execution policy bypass (full)"
   },
   {
     "pattern": "-windowstyle hidden",
-    "weight": 6,
+    "risk_score": 6,
     "category": "engine_managed",
     "description": "PowerShell hidden window execution"
   },
   {
     "pattern": "Set-MpPreference -DisableRealtimeMonitoring",
-    "weight": 9,
+    "risk_score": 9,
     "category": "engine_managed",
     "description": "Defender real-time protection disable"
   },
   {
     "pattern": "Set-MpPreference -DisableIOAVProtection",
-    "weight": 9,
+    "risk_score": 9,
     "category": "engine_managed",
     "description": "Defender IOAV protection disable"
   },
   {
     "pattern": "Unblock-File",
-    "weight": 4,
+    "risk_score": 4,
     "category": "engine_managed",
     "description": "Remove MOTW to bypass SmartScreen"
   }

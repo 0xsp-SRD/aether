@@ -1,181 +1,181 @@
 [
   {
     "pattern": "metsrv.dll",
-    "weight": 9,
+    "risk_score": 9,
     "category": "reflective_load",
     "description": "Meterpreter server DLL loaded reflectively"
   },
   {
     "pattern": "metsrv.x64.dll",
-    "weight": 9,
+    "risk_score": 9,
     "category": "reflective_load",
     "description": "Meterpreter 64-bit server DLL"
   },
   {
     "pattern": "ext_server_stdapi",
-    "weight": 9,
+    "risk_score": 9,
     "category": "webshell_generic",
     "description": "Meterpreter stdapi extension module"
   },
   {
     "pattern": "ext_server_priv",
-    "weight": 9,
+    "risk_score": 9,
     "category": "webshell_generic",
     "description": "Meterpreter priv extension (getsystem, hashdump)"
   },
   {
     "pattern": "ext_server_kiwi",
-    "weight": 9,
+    "risk_score": 9,
     "category": "webshell_generic",
     "description": "Meterpreter kiwi extension (mimikatz)"
   },
   {
     "pattern": "ext_server_incognito",
-    "weight": 9,
+    "risk_score": 9,
     "category": "webshell_generic",
     "description": "Meterpreter incognito token extension"
   },
   {
     "pattern": "ext_server_sniffer",
-    "weight": 8,
+    "risk_score": 8,
     "category": "webshell_generic",
     "description": "Meterpreter network sniffer extension"
   },
   {
     "pattern": "ext_server_extapi",
-    "weight": 8,
+    "risk_score": 8,
     "category": "webshell_generic",
     "description": "Meterpreter extended API extension"
   },
   {
     "pattern": "ext_server_espia",
-    "weight": 8,
+    "risk_score": 8,
     "category": "webshell_generic",
     "description": "Meterpreter screenshot/keylog extension"
   },
   {
     "pattern": "stdapi_sys_process",
-    "weight": 9,
+    "risk_score": 9,
     "category": "webshell_generic",
     "description": "Meterpreter stdapi process enumeration TLV"
   },
   {
     "pattern": "stdapi_fs_ls",
-    "weight": 8,
+    "risk_score": 8,
     "category": "webshell_generic",
     "description": "Meterpreter file listing command TLV"
   },
   {
     "pattern": "stdapi_fs_stat",
-    "weight": 7,
+    "risk_score": 7,
     "category": "webshell_generic",
     "description": "Meterpreter file stat command TLV"
   },
   {
     "pattern": "stdapi_sys_config",
-    "weight": 8,
+    "risk_score": 8,
     "category": "webshell_generic",
     "description": "Meterpreter system config TLV"
   },
   {
     "pattern": "stdapi_net_config",
-    "weight": 7,
+    "risk_score": 7,
     "category": "webshell_generic",
     "description": "Meterpreter network config TLV"
   },
   {
     "pattern": "stdapi_registry",
-    "weight": 7,
+    "risk_score": 7,
     "category": "webshell_generic",
     "description": "Meterpreter registry access TLV"
   },
   {
     "pattern": "core_channel_open",
-    "weight": 8,
+    "risk_score": 8,
     "category": "c2_tcp",
     "description": "Meterpreter channel open command"
   },
   {
     "pattern": "core_channel_write",
-    "weight": 7,
+    "risk_score": 7,
     "category": "c2_tcp",
     "description": "Meterpreter channel write command"
   },
   {
     "pattern": "core_channel_close",
-    "weight": 6,
+    "risk_score": 6,
     "category": "c2_tcp",
     "description": "Meterpreter channel close command"
   },
   {
     "pattern": "core_loadlib",
-    "weight": 8,
+    "risk_score": 8,
     "category": "reflective_load",
     "description": "Meterpreter reflective library loader command"
   },
   {
     "pattern": "core_migrate",
-    "weight": 9,
+    "risk_score": 9,
     "category": "reflective_load",
     "description": "Meterpreter process migration command"
   },
   {
     "pattern": "core_transport_add",
-    "weight": 7,
+    "risk_score": 7,
     "category": "c2_http",
     "description": "Meterpreter transport switching command"
   },
   {
     "pattern": "transport_get_timeouts",
-    "weight": 6,
+    "risk_score": 6,
     "category": "c2_http",
     "description": "Meterpreter transport timeout query"
   },
   {
     "pattern": "reverse_tcp",
-    "weight": 5,
+    "risk_score": 5,
     "category": "c2_tcp",
     "description": "Metasploit reverse TCP stager identifier"
   },
   {
     "pattern": "reverse_http",
-    "weight": 5,
+    "risk_score": 5,
     "category": "c2_http",
     "description": "Metasploit reverse HTTP stager identifier"
   },
   {
     "pattern": "reverse_https",
-    "weight": 5,
+    "risk_score": 5,
     "category": "c2_http",
     "description": "Metasploit reverse HTTPS stager identifier"
   },
   {
     "pattern": "bind_tcp",
-    "weight": 5,
+    "risk_score": 5,
     "category": "c2_tcp",
     "description": "Metasploit bind TCP stager identifier"
   },
   {
     "pattern": "PACKET_TYPE_REQUEST",
-    "weight": 7,
+    "risk_score": 7,
     "category": "c2_tcp",
     "description": "Meterpreter TLV packet type constant"
   },
   {
     "pattern": "PACKET_TYPE_RESPONSE",
-    "weight": 7,
+    "risk_score": 7,
     "category": "c2_tcp",
     "description": "Meterpreter TLV packet response constant"
   },
   {
     "pattern": "server.fdm",
-    "weight": 6,
+    "risk_score": 6,
     "category": "c2_http",
     "description": "Meterpreter stageless URI marker"
   },
   {
     "pattern": "RECV_CMD",
-    "weight": 6,
+    "risk_score": 6,
     "category": "c2_tcp",
     "description": "Meterpreter command receive loop marker"
   }

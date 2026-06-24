@@ -24,16 +24,17 @@ const BANNER =
     \\     / ___ /  __/ /_/ / / /  __/ /
     \\    /_/  |_\\___/\\__/_/ /_/\\___/_/
     \\
-    \\    Memory Hunter v0.8 — Process Inspector
-    \\    @zux0x3a - 0xsp SRD
-    \\
+    \\    Memory Forensics & Threat-hunting tool
+    \\    Author : Lawrence Amer - @zux0x3a
+    \\    Docs: https://0xsp.com/docs/aether-getting-started/
+    \\    Tag: Stable - v0.9
     \\
 ;
 
 const USAGE =
     \\USAGE:
-    \\  aether.exe --pid <PID> [OPTIONS]
-    \\  aether.exe --lookup "ProcessName"
+    \\  aether.exe --scan --pid <PID> [OPTIONS]
+    \\  aether.exe --scan --lookup "ProcessName"
     \\
     \\OPTIONS:
     \\  --pid, -p <PID>       Target process ID to scan
@@ -96,6 +97,7 @@ const Args = struct {
     rules_dir: ?[]const u8 = null,
     config_file: ?[]const u8 = null,
     dump: ?DumpConfig = null,
+    readmem: ?ReadMemConfig = null,
     scan_all: bool = false,
 
     var rules_dir_buf: [512]u8 = undefined;
@@ -113,6 +115,12 @@ const DumpConfig = struct {
     start: usize,
     size: usize,
     pad_zero: bool = false,
+};
+
+const ReadMemConfig = struct {
+    pid: u32,
+    start: usize,
+    size: usize,
 };
 
 fn wideToUtf8(wide: [*:0]const u16, buf: []u8) []const u8 {
@@ -145,8 +153,11 @@ fn parseArgs() Args {
     var expect_pid_additional = false;
 
     var expect_dump_pid = false;
+    var expect_readmem_pid = false;
     var expect_dump_start = false;
+    var expect_readmem_start = false;
     var expect_dump_size = false;
+    var expect_readmem_size = false;
 
     var hunt_args_left: u8 = 0;
     var hunt_pid: u32 = undefined;
@@ -186,6 +197,7 @@ fn parseArgs() Args {
             };
             continue;
         }
+
         if (expect_dump_start) {
             expect_dump_start = false;
             expect_dump_size = true;
@@ -202,6 +214,39 @@ fn parseArgs() Args {
             continue;
         }
         // END - dump memory section
+        //
+        //
+        // read memory section
+        if (expect_readmem_pid) {
+            expect_readmem_pid = false;
+            expect_readmem_start = true;
+            const pid = std.fmt.parseInt(u32, arg, 10) catch 0;
+            // Preserve pad_zero flag if it was set before --dump appeared on
+            // the command line.
+            //const preserved_pad = if (args_result.dump) |d| d.pad_zero else false;
+            args_result.readmem = .{
+                .pid = pid,
+                .start = 0,
+                .size = 0,
+            };
+            continue;
+        }
+        if (expect_readmem_start) {
+            expect_readmem_start = false;
+            expect_readmem_size = true;
+            if (args_result.readmem) |*d| {
+                d.start = std.fmt.parseInt(usize, output.HexStrip(arg), 16) catch 0;
+            }
+            continue;
+        }
+        if (expect_readmem_size) {
+            expect_readmem_size = false;
+            if (args_result.readmem) |*d| {
+                d.size = std.fmt.parseInt(usize, arg, 0) catch 0;
+            }
+            continue;
+        }
+
         if (expect_pid) {
             expect_pid = false;
             args_result.pid = std.fmt.parseInt(u32, arg, 10) catch null;
@@ -243,10 +288,9 @@ fn parseArgs() Args {
             args_result.json_mode = true;
         } else if (eq(arg, "--verbose") or eq(arg, "-v")) {
             args_result.verbose = true;
-        } else if (eq(arg, "--scan") or eq(arg, "-a")) {
-            args_result.scan = true; // yes here if --rules filled then it is rules based scan.
-            //  expect_rules = true;
-        } else if (eq(arg, "--scan-all") or eq(arg, "-a")) {
+        } else if (eq(arg, "--scan") or eq(arg, "-s")) {
+            args_result.scan = true;
+        } else if (eq(arg, "--scan-all") or eq(arg, "-A")) {
             args_result.scan_all = true;
         } else if (eq(arg, "--help") or eq(arg, "-h")) {
             args_result.help = true;
@@ -259,6 +303,8 @@ fn parseArgs() Args {
             expect_config = true;
         } else if (eq(arg, "--dump")) {
             expect_dump_pid = true;
+        } else if (eq(arg, "--read")) {
+            expect_readmem_pid = true;
         } else if (eq(arg, "--dump-pad-zero")) {
             //
             // Order-independent: applies whether it appears before or after
@@ -333,6 +379,43 @@ fn wideEqlICase(a: []const u16, b: []const u16) bool {
     return true;
 }
 
+fn setupScanner(
+    args: Args,
+    gpa: std.mem.Allocator,
+    err_out: console.Writer,
+    out_scanner: *scanner.Scanner,
+    out_rules_based: *bool,
+) !void {
+    if (args.config_file) |path| {
+        out_scanner.* = scanner.Scanner.initFromFile(gpa, path) catch |err| {
+            err_out.print("[!] Failed to load config file: {s} (error: {any})\n", .{ path, err });
+            return err;
+        };
+        out_rules_based.* = out_scanner.signatures().len > 0;
+        if (!args.json_mode) {
+            err_out.print("[+] Loaded {d} signatures from {s}\n", .{ out_scanner.signatures().len, path });
+        }
+        return;
+    }
+    if (args.rules_dir) |dir| {
+        out_scanner.* = scanner.Scanner.initFromDir(gpa, dir) catch |err| {
+            err_out.print("[!] Failed to load rules directory: {s} (error: {any})\n", .{ dir, err });
+            return err;
+        };
+        out_rules_based.* = out_scanner.signatures().len > 0;
+        if (!args.json_mode) {
+            err_out.print("[+] Loaded {d} signatures from {s}/\n", .{ out_scanner.signatures().len, dir });
+        }
+        return;
+    }
+    // No explicit rules path: empty scanner, structural-only mode.
+    out_scanner.* = try scanner.Scanner.initEmpty(gpa);
+    out_rules_based.* = false;
+    if (!args.json_mode) {
+        err_out.write("[*] No --rules / --config given - structural IOC scan only\n");
+    }
+}
+
 fn scanProcess(scn: *scanner.Scanner, pid: u32, json_mode: bool, verbose: bool, allocator: std.mem.Allocator, out: console.Writer, rule_based: bool, err_out: console.Writer) !bool {
     if (!json_mode) {
         err_out.print("[*] Accuiring handle for PID:{d}...\n", .{pid});
@@ -394,49 +477,23 @@ pub fn main(init: std.process.Init) !void {
     var my_scanner: scanner.Scanner = undefined;
     var scanner_inited = false;
 
-    if (args.scan) {
-        if (args.config_file) |config_path| {
-            //      if (args.scan) { // binary.exe --scan --config rules/cobalt0.json?
-            my_scanner = scanner.Scanner.initFromFile(gpa, config_path) catch |err| {
-                err_out.print("[!] Failed to load config file: {s} (error: {any})\n", .{ config_path, err });
-                return;
-            };
-
-            scanner_inited = true;
-            rules_based = true;
-
-            if (!args.json_mode) {
-                err_out.print("[+] Loaded {d} signatures from {s}\n", .{ my_scanner.signatures().len, config_path });
-            }
-            // } else //if (args.scan) { // binary.exe --scan process => it will load the rules dir.
-        } else if (args.rules_dir) |rules_path| {
-            // const rules_path = args.rules_dir orelse "rules";
-            my_scanner = scanner.Scanner.initFromDir(gpa, rules_path) catch |err| {
-                err_out.print("[!] Failed to load rules directory: {s} (error: {any})\n", .{ rules_path, err });
-                return;
-            };
-            scanner_inited = true;
-            rules_based = true;
-
-            if (!args.json_mode) {
-                err_out.print("[+] Loaded {d} signatures from {s}/\n", .{ my_scanner.signatures().len, rules_path });
-            }
-        } else {
-            const fallback = args.rules_dir orelse "rules";
-            my_scanner = scanner.Scanner.initFromDir(gpa, fallback) catch {
-                // If rules/ doesn't exist, create empty scanner for structural scan
-                scanner_inited = true;
-                rules_based = false;
-                return;
-            };
-            scanner_inited = true;
-            rules_based = false;
-            if (!args.json_mode) {
-                err_out.print("[*] No --rules/--config given — structural IOCs scan only\n", .{});
-            }
-        }
+    const needs_scanner = args.scan or args.scan_all or args.pid != null or args.lookup_mode != null;
+    if (needs_scanner) {
+        setupScanner(args, gpa, err_out, &my_scanner, &rules_based) catch return;
+        scanner_inited = true;
     }
     defer if (scanner_inited) my_scanner.deinit();
+
+    // SeDebugPrivilege must be enabled BEFORE any scan branch (including
+    // --scan-all) otherwise PROCESS_VM_READ on protected processes fails.
+    const priv_ok = privilege.enableDebugPrivilege();
+    if (needs_scanner and !args.json_mode) {
+        if (priv_ok) {
+            err_out.write("[+] SeDebugPrivilege: ENABLED\n");
+        } else {
+            err_out.write("[!] SeDebugPrivilege: FAILED -- run from an elevated console if scanning protected processes\n");
+        }
+    }
 
     if (args.networking) |pid| {
         const conns = try netstat.listconnections(allocator, pid);
@@ -486,24 +543,6 @@ pub fn main(init: std.process.Init) !void {
             &.{ "STATE", "LOCAL", "REMOTE", "PID" },
             slices[0..row_count],
         );
-
-        //   const sigs_loaded = my_scanner.signatures();
-        //   err_out.print("[TEST] Loaded {d} signatures total\n", .{sigs_loaded.len});
-        //    if (sigs_loaded.len > 0) {
-        //       err_out.print("[TEST] First: pattern=\"{s}\" weight={d} category={s}\n", .{
-        //          sigs_loaded[0].pattern,
-        //          sigs_loaded[0].weight,
-        //           sigs_loaded[0].category.toString(),
-        //        });
-        //      err_out.print("[TEST] Last:  pattern=\"{s}\" weight={d} category={s}\n", .{
-        //         sigs_loaded[sigs_loaded.len - 1].pattern,
-        //          sigs_loaded[sigs_loaded.len - 1].weight,
-        //         sigs_loaded[sigs_loaded.len - 1].category.toString(),
-        //       });
-        //   } else {
-        //        err_out.write("[TEST] WARNING: Zero signatures loaded!\n");
-        //}
-        //   return;
     }
 
     // memory dump section
@@ -570,7 +609,38 @@ pub fn main(init: std.process.Init) !void {
                 );
             }
         }
-        return;
+    }
+    //  return;
+    // }
+
+    if (args.readmem) |cfg| {
+        const handle = w.OpenProcess(
+            w.PROCESS_VM_READ | w.PROCESS_QUERY_INFORMATION,
+            w.FALSE,
+            cfg.pid,
+        ) orelse {
+            const err = w.GetLastError();
+            err_out.print("[!] OpenProcess failed for PID:{d} (error {d})\n", .{ cfg.pid, err });
+            return;
+        };
+        defer _ = w.CloseHandle(handle);
+
+        if (!args.json_mode) {
+            err_out.print("[*] Dumping 0x{X} ({d} bytes) from PID {d} )...\n", .{
+                cfg.start, cfg.size, cfg.pid,
+            });
+        }
+
+        //  const policy: memory.DumpPolicy = if (cfg.pad_zero) .pad_zero else .strict_committed;
+        const stats = memory.readMemRegion(
+            handle,
+            cfg.start,
+            cfg.size,
+        ) catch |err| {
+            err_out.print("[!] READ failed: {any}\n", .{err});
+            return;
+        };
+        _ = stats;
     }
 
     if (args.hunt) |cfg| {
@@ -596,7 +666,6 @@ pub fn main(init: std.process.Init) !void {
     }
 
     if (args.scan_all) {
-        err_out.print("wassssah bi", .{});
         out.write(BANNER);
         const pids = try findallpids(allocator, "--ALL");
         defer allocator.free(pids);
@@ -609,19 +678,6 @@ pub fn main(init: std.process.Init) !void {
         }
 
         return;
-    }
-
-    //  if (!args.json_mode) {
-    //      err_out.write(BANNER);
-    //  }
-
-    const priv_ok = privilege.enableDebugPrivilege();
-    if (!args.json_mode) {
-        if (priv_ok) {
-            err_out.write("[+] SeDebugPrivilege: ENABLED\n");
-        } else {
-            err_out.write("[!] SeDebugPrivilege: FAILED -- if it's required. You need run as Administrator if required\n");
-        }
     }
 
     if (args.lookup_mode) |target| {
@@ -662,11 +718,6 @@ pub fn main(init: std.process.Init) !void {
     }
 
     if (args.pid) |pid| {
-        if (!scanner_inited) {
-            err_out.write("[!] --pid requires --scan argument\n");
-            return;
-        }
-
         out.write(BANNER);
 
         const found = try scanProcess(&my_scanner, pid, args.json_mode, args.verbose, allocator, out, rules_based, err_out);
@@ -675,31 +726,4 @@ pub fn main(init: std.process.Init) !void {
         }
         return;
     }
-
-    // if (args.scan_all) {
-    //     const pids = try findW3wpPids(allocator);
-    //     defer allocator.free(pids);
-
-    //    if (pids.len == 0) {
-    //        if (args.json_mode) {
-    //            out.write("{\"w3wp_pids\":[],\"findings\":[]}\n");
-    //          } else {
-    //               err_out.write("[*] No w3wp.exe processes found.\n");
-    //        }
-    //          return;
-    //      }
-
-    //if (!args.json_mode) {
-    //     err_out.print("[*] Scanning {d} w3wp.exe process(es)...\n\n", .{pids.len});
-    //
-
-    //  for (pids) |pid| {
-    //       _ = try scanProcess(&my_scanner, pid, args.json_mode, args.verbose, allocator, out, err_out);
-    //   }
-    //   return;
-
-    //   if (!args.json_mode) {
-    //      err_out.write("[!] No action specified. Use --pid <PID>, --list, or --scan-all\n");
-    //      err_out.write("[*] Run with --help for usage.\n");
-    //   }
 }

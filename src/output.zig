@@ -33,17 +33,29 @@ pub fn writeJsonResults(
 
     w.write("\"findings\":[");
     var sfirst = true;
-    for (results.suspicious.items) |s| {
-        if (!sfirst) w.write("");
+    for (results.suspicious.items) |*s| {
+        if (!sfirst) w.write(",");
         sfirst = false;
 
         w.write("{");
         w.print("\"type\":\"{s}\",", .{s.label()});
         w.print("\"severity\":\"{s}\",", .{s.severity()});
         w.print("\"address\":\"0x{X}\",", .{s.address});
-        w.print("\"size\":{d}", .{s.size});
+        w.print("\"size\":{d},", .{s.size});
+        w.write("\"description\":\"");
+        writeJsonEscaped(w, s.description());
+        w.write("\"");
 
-        if (s.private_pages > 0 or s.region_pages > 0) {
+        if (s.evidence_len > 0) {
+            w.write(",\"evidence\":\"");
+            writeJsonEscaped(w, s.evidence());
+            w.write("\"");
+        }
+
+        if (s.kind == .heap_api_table) {
+            w.print(",\"pointer_count\":{d}", .{s.private_pages});
+            w.print(",\"module_count\":{d}", .{s.region_pages});
+        } else if (s.private_pages > 0 or s.region_pages > 0) {
             w.print(",\"private_pages\":{d}", .{s.private_pages});
             w.print(",\"region_pages\":{d}", .{s.region_pages});
         }
@@ -93,7 +105,7 @@ pub fn writeJsonResults(
             w.write("\"pattern\":\"");
             writeJsonEscaped(w, sig.pattern);
             w.write("\",");
-            w.print("\"weight\":{d},", .{sig.weight});
+            w.print("\"risk_score\":{d},", .{sig.risk_score});
             w.print("\"offset\":\"0x{X}\",", .{hit.region_base + hit.offset});
             w.print("\"encoding\":\"{s}\",", .{hit.encoding.toString()});
             w.write("\"description\":\"");
@@ -154,8 +166,27 @@ pub fn writeConsoleReport(
         w.write("  ==================================================\n");
         w.print("   Structural Scan IOCs ({d})  \n", .{results.suspicious.items.len});
         w.write("  ==================================================\n");
-        for (results.suspicious.items) |s| {
+        for (results.suspicious.items) |*s| {
             has_findings = true;
+
+            if (s.kind == .heap_api_table) {
+                w.print("  [+] ALERT: \x1b[93m[{s}]\x1b[0m SEVERITY FINDING\n", .{s.severity()});
+
+                w.print("        Finding: {s} @ 0x{X} ({d} bytes)\n", .{ s.label(), s.address, s.size });
+
+                w.print("        Summary:  {s}\n", .{s.description()});
+                if (s.evidence_len > 0) {
+                    w.print("        Telemetry: {s}\n", .{s.evidence()});
+                }
+                w.write("        Summary:  API-resolution tables live in PE .idata of MEM_IMAGE, not in MEM_PRIVATE heap.\n");
+                w.write("               Seeing one on the heap means the process built it at runtime via\n");
+                w.write("               GetProcAddress or hash-based resolution - a technique implants use to\n");
+                w.write("               hide their imports from static analysis.\n");
+                w.write("        Next Step:  dump this region to inspect the resolved API names, then walk the\n");
+                w.write("               nearby heap for indicators, using static scanning is beneficial.\n");
+                continue;
+            }
+
             if (s.private_pages > 0) {
                 w.print(" \x1b[93m[{s}]\x1b[0m {s} @ 0x{X} ({d} private / {d} pages)\n", .{
                     s.severity(),
@@ -172,6 +203,7 @@ pub fn writeConsoleReport(
                     s.size,
                 });
             }
+            w.print("        Finding: {s}\n", .{s.description()});
         }
         w.write("\n");
     }
@@ -196,7 +228,7 @@ pub fn writeConsoleReport(
             const sig = &results.signatures[hit.sig_index];
             if (sig.category != cs.category) continue;
             w.print("    +{d} \"{s}\" @ 0x{X} ({s})\n", .{
-                sig.weight,
+                sig.risk_score,
                 sig.pattern,
                 hit.region_base + hit.offset,
                 hit.encoding.toString(),

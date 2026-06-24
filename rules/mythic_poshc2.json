@@ -1,157 +1,157 @@
 [
   {
     "pattern": "mythic_agent",
-    "weight": 9,
+    "risk_score": 9,
     "category": "c2_http",
     "description": "Mythic C2 agent identifier"
   },
   {
     "pattern": "mythic.crypto",
-    "weight": 8,
+    "risk_score": 8,
     "category": "c2_http",
     "description": "Mythic agent crypto module"
   },
   {
     "pattern": "MythicPayloadType",
-    "weight": 9,
+    "risk_score": 9,
     "category": "c2_http",
     "description": "Mythic payload type class"
   },
   {
     "pattern": "AgentMessage",
-    "weight": 5,
+    "risk_score": 5,
     "category": "c2_http",
     "description": "Mythic agent message struct"
   },
   {
     "pattern": "post_response",
-    "weight": 4,
+    "risk_score": 4,
     "category": "c2_http",
     "description": "Mythic agent response callback"
   },
   {
     "pattern": "get_tasking",
-    "weight": 5,
+    "risk_score": 5,
     "category": "c2_http",
     "description": "Mythic agent task polling"
   },
   {
     "pattern": "staging_rsa",
-    "weight": 7,
+    "risk_score": 7,
     "category": "c2_http",
     "description": "Mythic RSA key exchange staging"
   },
   {
     "pattern": "upload_response",
-    "weight": 4,
+    "risk_score": 4,
     "category": "c2_http",
     "description": "Mythic file upload response"
   },
   {
     "pattern": "ApolloInterop",
-    "weight": 9,
+    "risk_score": 9,
     "category": "c2_http",
     "description": "Apollo Mythic agent interop namespace"
   },
   {
     "pattern": "Apollo.Agent",
-    "weight": 9,
+    "risk_score": 9,
     "category": "c2_http",
     "description": "Apollo Mythic .NET agent class"
   },
   {
     "pattern": "Apollo.Tasks",
-    "weight": 8,
+    "risk_score": 8,
     "category": "c2_http",
     "description": "Apollo Mythic agent task handlers"
   },
   {
     "pattern": "Athena.Agent",
-    "weight": 8,
+    "risk_score": 8,
     "category": "c2_http",
     "description": "Athena Mythic .NET agent class"
   },
   {
     "pattern": "Medusa.Agent",
-    "weight": 8,
+    "risk_score": 8,
     "category": "c2_http",
     "description": "Medusa Mythic Python agent class"
   },
   {
     "pattern": "PoshC2",
-    "weight": 9,
+    "risk_score": 9,
     "category": "c2_http",
     "description": "PoshC2 framework identifier"
   },
   {
     "pattern": "poshc2",
-    "weight": 9,
+    "risk_score": 9,
     "category": "c2_http",
     "description": "PoshC2 framework identifier (lowercase)"
   },
   {
     "pattern": "Posh_v2",
-    "weight": 8,
+    "risk_score": 8,
     "category": "c2_http",
     "description": "PoshC2 v2 implant marker"
   },
   {
     "pattern": "dropper_cs",
-    "weight": 7,
+    "risk_score": 7,
     "category": "c2_http",
     "description": "PoshC2 C# dropper module"
   },
   {
     "pattern": "Implant-Core",
-    "weight": 8,
+    "risk_score": 8,
     "category": "c2_http",
     "description": "PoshC2 implant core module"
   },
   {
     "pattern": "Sharp_v4_x64",
-    "weight": 8,
+    "risk_score": 8,
     "category": "c2_http",
     "description": "PoshC2 Sharp implant 64-bit"
   },
   {
     "pattern": "Sharp_v4_x86",
-    "weight": 8,
+    "risk_score": 8,
     "category": "c2_http",
     "description": "PoshC2 Sharp implant 32-bit"
   },
   {
     "pattern": "FCommLoader",
-    "weight": 7,
+    "risk_score": 7,
     "category": "c2_http",
     "description": "PoshC2 FComm loader module"
   },
   {
     "pattern": "Nighthawk",
-    "weight": 9,
+    "risk_score": 9,
     "category": "c2_http",
     "description": "Nighthawk C2 implant identifier"
   },
   {
     "pattern": "nighthawk.dll",
-    "weight": 9,
+    "risk_score": 9,
     "category": "reflective_load",
     "description": "Nighthawk implant DLL"
   },
   {
     "pattern": "NighthawkConfig",
-    "weight": 9,
+    "risk_score": 9,
     "category": "c2_http",
     "description": "Nighthawk configuration struct"
   },
   {
     "pattern": "MDSecAgent",
-    "weight": 9,
+    "risk_score": 9,
     "category": "c2_http",
     "description": "MDSec Nighthawk agent class"
   },
   {
     "pattern": "NighthawkTransport",
-    "weight": 8,
+    "risk_score": 8,
     "category": "c2_http",
     "description": "Nighthawk transport layer"
   }

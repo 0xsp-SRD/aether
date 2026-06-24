@@ -100,6 +100,7 @@ pub const SuspicionType = enum {
     entropy_encrypted, // peak window entropy >= 7.5 + corroboration (prelude, chi-sq, TSAV)
     entropy_shellcode, // shellcode prelude match or entropy gradient (decoder stub + payload)
     entropy_suspicious, // peak window entropy >= 7.0, no corroboration
+    heap_api_table, // heap-resident resolved API pointer table (API hashing)
 };
 
 pub const Suspicion = struct {
@@ -108,6 +109,51 @@ pub const Suspicion = struct {
     size: usize,
     private_pages: u32 = 0,
     region_pages: u32 = 0,
+    // Optional human-readable evidence (e.g. contributing module names for
+    // HEAP_API_TABLE). Fixed-size to avoid allocator/lifetime concerns.
+    evidence_buf: [192]u8 = [_]u8{0} ** 192,
+    evidence_len: u8 = 0,
+
+    pub fn evidence(self: *const Suspicion) []const u8 {
+        return self.evidence_buf[0..self.evidence_len];
+    }
+
+    pub fn setEvidence(self: *Suspicion, s: []const u8) void {
+        const n: u8 = @intCast(@min(s.len, self.evidence_buf.len));
+        @memcpy(self.evidence_buf[0..n], s[0..n]);
+        self.evidence_len = n;
+    }
+
+    /// Plain-English explanation of what this finding means and why it
+    /// matters. Shown beneath the headline label in the console report.
+    pub fn description(self: Suspicion) []const u8 {
+        return switch (self.kind) {
+            .clr_init => "Process hosts the .NET runtime (informational, not malicious by itself).",
+            .missing_peb_entry => "Loaded image not registered in the PEB module list - DLL hollowing or module stomping.",
+            .modified_code_low => "Image has a few private (modified) executable pages - weak signal.",
+            .modified_code_medium => "Image has private executable pages corroborated by an external signal.",
+            .modified_code_high => "Image has many private executable pages or a hook prologue / disk-diff confirmed.",
+            .private_rwx => "Executable + writable private region - classic shellcode buffer.",
+            .unsigned_image => "Loaded module is not Authenticode-signed.",
+            .inconsistent_perms => "Page permissions differ between memory and the on-disk PE layout.",
+            .dotnet_ngen => "Native-compiled .NET image - benign unless paired with other IOCs.",
+            .hook_prologue => "Function start patched with a JMP / trampoline - inline API hook.",
+            .disk_mem_diff => "Image bytes in memory differ from the file on disk at the same RVA.",
+            .thread_start_anomaly => "One or more threads start at addresses that fail validation.",
+            .thread_shellcode_private => "Thread start address is inside a private executable region (shellcode thread).",
+            .thread_staged_private_rw => "Thread starts inside a private RW region - likely staged payload pre-VirtualProtect.",
+            .thread_mapped_nonpe => "Thread starts inside a MEM_MAPPED region with no PE header.",
+            .thread_hollowed_host => "Thread starts inside a module whose allocation was flagged as hollowed.",
+            .thread_modified_host => "Thread starts inside a module whose code pages were flagged as modified.",
+            .thread_spoof_trampoline => "Thread start looks like a call-stack spoofing trampoline.",
+            .thread_suspended_rip_anomaly => "Suspended thread's RIP lands in a flagged allocation.",
+            .xor_pe_header => "MZ/PE header obfuscated with a short XOR key - staged payload.",
+            .entropy_encrypted => "High-entropy private region with corroborating signals - encrypted payload.",
+            .entropy_shellcode => "Shellcode prelude or entropy gradient detected (decoder stub + payload).",
+            .entropy_suspicious => "High peak entropy but no corroboration - weak signal.",
+            .heap_api_table => "Heap-resident function pointer table referencing multiple system DLLs - hallmark of runtime API resolution / API hashing used by C2 implants.",
+        };
+    }
 
     pub fn label(self: Suspicion) []const u8 {
         return switch (self.kind) {
@@ -134,6 +180,7 @@ pub const Suspicion = struct {
             .entropy_encrypted => "ENTROPY_ENCRYPTED",
             .entropy_shellcode => "ENTROPY_SHELLCODE",
             .entropy_suspicious => "ENTROPY_SUSPICIOUS",
+            .heap_api_table => "HEAP_API_TABLE",
         };
     }
 
@@ -163,6 +210,7 @@ pub const Suspicion = struct {
             => "MEDIUM",
             .modified_code_low, .unsigned_image, .dotnet_ngen => "LOW",
             .clr_init => "INFO",
+            .heap_api_table => "HIGH",
         };
     }
 };
@@ -185,7 +233,7 @@ const DOS_STUB_OFFSET: usize = 0x4E;
 
 pub const Signature = struct {
     pattern: []const u8,
-    weight: u32,
+    risk_score: u32,
     category: Category,
     description: []const u8,
 };
@@ -489,9 +537,11 @@ pub fn slidingWindowEntropy(buf: []const u8) struct { peak: f64, offset: usize }
     return .{ .peak = peak, .offset = peak_off };
 }
 
+///
 /// Chi-squared statistic against a uniform byte distribution.
 /// Perfectly uniform (encrypted) data produces values near 256.
 /// Normal code / text produces values in the thousands.
+///
 pub fn chiSquaredUniformity(buf: []const u8) f64 {
     if (buf.len == 0) return 0.0;
     var counts: [256]u32 = [_]u32{0} ** 256;
