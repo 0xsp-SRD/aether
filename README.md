@@ -5,13 +5,15 @@
 
 # Aether 
 
-version : 0.8 (public beta)
+version : 0.9 (stable release)
 
 **Aether** is a Windows memory-forensics and threat hunting tool that scans live process
 memory for malicious pattern, detect injection techniques, implant signatures, reflectively loaded
 .NET assemblies. it works with a multi-layer confidence model that dramatically reduce the false
 positive rate and hunt for malicious behaviour. Aether has good capabilities in detecting Hollowing, APC, thread hijacking techniques. Security analysts can use it to scan,hunt and snapshot suspicious region for offline analysis. 
 
+Docs: https://0xsp.com/docs/aether-getting-started/
+Blogpost: https://0xsp.com/security%20research%20%20development%20srd/aether-memory-forensics-and-threat-hunting-tool/ 
 
 ## Core Features
 quick explainations for Aether core features, you can read the full technical blogpost to get more insights: 
@@ -100,6 +102,20 @@ check:
   GET_CONTEXT` → `QUERY_INFORMATION` → `QUERY_LIMITED_INFORMATION` per
   thread, so partial-access scenarios still produce useful classifications
 
+### L9 + L10 - Heap API-Table Detection with Cross-Module Correlation
+Runtime API resolution is a technique frequently used by malware. Aether detection mechanism identifies this behavior by scanning the heap for valid module addresses and pointers, and correlating the results with the filtering criteria described below:
+
+Each filter kills a specific FP class observed in real-world telemetry:
+
+| Filter | Rule | FP class it removes |
+|---|---|---|
+| F1 | `count >= 5` | random pointer-shaped data, NULL, HMODULES |
+| F2 | reject runs that point only into the host EXE | application-class C++ vtables |
+| F3 | `distinct_modules >= 2` | single-DLL framework vtables (Qt, MFC, wxWidgets) |
+| F4 | `capability_modules >= 2` | browser / CRT vtables that touch a single OS DLL (e.g. `iertutil + ucrtbase + shlwapi`) |
+| F5 (L10) | `>= 80%` of checkable pointers land on **exported** RVAs | Winsock LSP dispatch tables, plugin callback arrays, vtables pointing at internal (non-exported) methods |
+  
+
 ### Entropy analysis & Shellcode heuristics 
 
 Aether supports XOR detection pattern at stub level for now and adopt Shannon entropy alogrithm to check randomness of byte values in memory region, it flags everything above a threshold. to address high amount of FP, Aether uses multiple indicators.
@@ -118,78 +134,6 @@ Aether supports XOR detection pattern at stub level for now and adopt Shannon en
   `private_pages` and `region_pages` so triage has the actual numbers
 - **Table-formatted output** using Unicode box-drawing characters for
   connection monitoring
-
-
-## Suspicion Types
-
-### Modified-code pipeline (L1–L5)
-
-| Label | Severity | Meaning |
-|-------|----------|---------|
-| `MODIFIED_CODE_HIGH` | HIGH | Executable IMAGE pages with hook prologue, on-disk diff, OR ≥ 25 % private-page ratio |
-| `MODIFIED_CODE_MED` | MEDIUM | Corroborated by another signal, OR ≥ 5 % ratio, OR ≥ 8 private pages |
-| `HOOK_PROLOGUE` | MEDIUM | Trampoline byte pattern found at the start of a private code page |
-| `DISK_MEM_DIFF` | HIGH | First bytes of an executable private page differ from the on-disk image |
-| `MISSING_PEB` | HIGH | `MEM_IMAGE` allocation not present in the PEB module list (DLL hollowing) |
-| `PRIVATE_RWX` | HIGH | Private memory with executable protection |
-| `CLR_INIT` | INFO | Target process hosts the .NET CLR (filtering hint, not a finding) |
-
-### Thread Start-Address Validation (L8)
-
-| Label | Severity | Meaning |
-|-------|----------|---------|
-| `TSAV_SHELLCODE_PRIVATE` | CRITICAL | Thread starts in `MEM_PRIVATE + PAGE_EXECUTE_*` (classic shellcode thread) |
-| `TSAV_SUSPENDED_RIP` | CRITICAL | Suspended thread's `Rip` / `Eip` resolves to a suspicious region disagreeing with `Win32StartAddress` |
-| `TSAV_HOLLOWED_HOST` | HIGH | Thread starts inside a `MEM_IMAGE` allocation missing from the PEB |
-| `TSAV_MODIFIED_HOST` | HIGH | Thread starts inside an allocation already flagged by L1–L5 |
-| `TSAV_STAGED_PRIVATE_RW` | HIGH | Thread starts in `MEM_PRIVATE + PAGE_READWRITE` (pre-`VirtualProtect` staging) |
-| `TSAV_MAPPED_NONPE` | MEDIUM | Thread starts in `MEM_MAPPED` non-PE section |
-| `TSAV_SPOOF_TRAMPOLINE` | MEDIUM | Thread `Win32StartAddress` equals a denylisted trampoline (`LoadLibraryW`, `RtlExitUserThread`, etc.) |
-| `THREAD_START_ANOMALY` | HIGH | Aggregate count of suspicious threads (one per scan) |
-
-### Encrypted Payload Detection
-
-| Label | Severity | Meaning |
-|-------|----------|---------|
-| `XOR_PE_HEADER` | CRITICAL | PE header found under single- or multi-byte XOR; DOS-stub anchor + `MZ` / `e_lfanew` / `PE\0\0` consistency check all pass (Donut, CS `sleep_mask`, Sliver, sRDI) |
-
-
-## Rule Packs
-
-Signatures are organised into JSON rule packs. Drop any of these into the
-`rules/` directory:
-
-| File | Coverage |
-|------|----------|
-| `cobalt_strike.json` | Cobalt Strike beacon artifacts |
-| `meterpreter.json` | Metasploit Meterpreter implant |
-| `sliver.json` | Sliver C2 implant (BishopFox) |
-| `brute_ratel.json` | Brute Ratel C4 badger |
-| `havoc.json` | Havoc C2 demon |
-| `sharp_tools.json` | .NET offensive tools (Rubeus, Seatbelt, SharpHound) |
-| `mimikatz.json` | Mimikatz credential theft |
-| `powershell_cradles.json` | PowerShell attack cradles & AMSI bypass |
-| `dotnet_loaders.json` | Generic .NET loaders & injectors |
-| `mythic_poshc2.json` | Mythic / PoshC2 / Nighthawk implants |
-| `phantom_str.json` | Phantom ASP .NET loader |
-
-Each rule file is a JSON array of signature objects:
-
-```json
-[
-  {
-    "pattern": "msxsl:script",
-    "weight": 5,
-    "category": "engine_xslt",
-    "description": "XSLT script block declaration"
-  }
-]
-```
-
-`category` maps to one of: `engine_xslt`, `engine_codedom`, `engine_managed`,
-`c2_tcp`, `c2_http`, `c2_sql`, `c2_smtp`, `c2_file`, `c2_dns`, `evasion`,
-`reflective_load`, `webshell_generic`.
-
 
 ## Usage
 
@@ -213,52 +157,9 @@ Aether.exe --scan-all [OPTIONS]
 | `--networking` | Network-monitoring mode |
 | `--rules`, `-r <dir>` | Rules directory (default: `rules/`) |
 | `--config`, `-c <file>` | Single rule file (legacy format) |
+| `--dump`, `` | Dump specific memory region with custom size |
+| `--read`, `` | Read memory region content live on terminal |
 | `--help`, `-h` | Show help |
-
-
-## Sample Output
-
-### Console Report
-```
-  Scan Results for PID 4820
-  ==================================================
-  Regions: 847 total, 312 scanned, 287 system-skipped
-  Bytes scanned: 214.35 MB
-  Read errors: 3
-  Scan time: 1247 ms
-
-  [HIGH] ENGINE_XSLT | score=18 hits=4 [T1220]
-    +5 "msxsl:script" @ 0x7FFE2A3B1000 (ascii)
-    +6 "urn:payload"  @ 0x7FFE2A3B1200 (ascii)
-    +4 "enableScript" @ 0x7FFE2A3B1400 (utf16le)
-    +3 "XsltSettings" @ 0x7FFE2A3B1600 (ascii)
-
-  [CRITICAL] REFLECTIVE_LOAD | 2 PE headers in MEM_PRIVATE
-    (1 with .NET BSJB metadata) [T1620]
-
-  ---- Structural IOCs (8) ----
-  [HIGH]     MISSING_PEB             @ 0x000001D6E0000000 (1048576 bytes)
-  [HIGH]     DISK_MEM_DIFF           @ 0x000001D6E0001000 (4 private / 240 pages)
-  [HIGH]     MODIFIED_CODE_HIGH      @ 0x000001D6E0001000 (4 private / 240 pages)
-  [HIGH]     PRIVATE_RWX             @ 0x000001D6EDDD0000 (12288 bytes)
-  [CRITICAL] XOR_PE_HEADER           @ 0x000001D6EDDD0000 (4 bytes)
-  [CRITICAL] TSAV_SHELLCODE_PRIVATE  @ 0x000001D6EDDD0000 (8472 bytes)
-  [HIGH]     TSAV_MODIFIED_HOST      @ 0x000001D6E0001000 (8476 bytes)
-  [HIGH]     THREAD_START_ANOMALY    @ 0x0 (2 bytes)
-```
-
-With `--verbose` you also see per-thread detail and recovered XOR keys:
-```
-  [!] XOR_PE_HEADER @ 0x1D6EDDD0000 key_len=4 key=AABBCCDD
-  [!] TID:8472 SHELLCODE_PRIVATE start=0x1D6EDDD0150
-  [!] TID:8476 MODIFIED_HOST     start=0x1D6E0001A80 host=msi.dll
-```
-
-The recovered key bytes can be passed to a one-liner (`python -c 'import
-sys; k=bytes.fromhex("AABBCCDD"); d=sys.stdin.buffer.read(); sys.stdout.
-buffer.write(bytes(b^k[i%len(k)] for i,b in enumerate(d)))'`) to dump
-the decrypted PE for analysis.
-
 
 ## How to Compile
 
@@ -291,7 +192,6 @@ Copy `zig-out/bin/Aether.exe` and the `rules/` directory to the target
 Windows machine if you want to perform additional signature scan. if the target process requires Administrative privileges, you need to run Aether.exe with Administrator privileges. 
 
 
-
 ## Limitations
 
 - **Usermode only** — no kernel driver; cannot detect rootkits or
@@ -309,5 +209,5 @@ Windows machine if you want to perform additional signature scan. if the target 
 - **XOR-PE detection is basic on this release** 
 
 
-
 ## License
+Aether is open-source software licensed under the GNU General Public License v3.0 (GPLv3).
