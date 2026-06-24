@@ -13,7 +13,12 @@ memory for malicious pattern, detect injection techniques, implant signatures, r
 positive rate and hunt for malicious behaviour. Aether has good capabilities in detecting Hollowing, APC, thread hijacking techniques. Security analysts can use it to scan,hunt and snapshot suspicious region for offline analysis. 
 
 Docs: https://0xsp.com/docs/aether-getting-started/
-Blogpost: https://0xsp.com/security%20research%20%20development%20srd/aether-memory-forensics-and-threat-hunting-tool/ 
+
+Research articles: 
+
+https://0xsp.com/security%20research%20%20development%20srd/aether-memory-forensics-and-threat-hunting-tool/ 
+
+https://0xsp.com/research/game-of-hide-and-seek-detecting-dynamic-api-resolution-at-runtime-with-aether/
 
 ## Core Features
 quick explainations for Aether core features, you can read the full technical blogpost to get more insights: 
