@@ -359,7 +359,6 @@ fn loadOneFile(allocator: std.mem.Allocator, path: []const u8) !FileLoadResult {
     }
 
     const parsed = std.json.parseFromSlice([]Signature, allocator, data[0..bytes_read], .{ .allocate = .alloc_always }) catch |err| {
-        allocator.free(data);
         return err;
     };
 
